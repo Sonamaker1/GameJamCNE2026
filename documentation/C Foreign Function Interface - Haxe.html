@@ -1,0 +1,453 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head><script src="https://web-static.archive.org/_static/js/athena.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app265.us.archive.org';v.server_ms=375;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/bundle-playback.js?v=lGQTDXxZ" charset="utf-8"></script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/wombat.js?v=o9P2E1FK" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden","showSwfDownload":true};</script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/ruffle/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://old.haxe.org:80/doc/cpp/ffi?lang=en","20170621163642","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1498063002");
+</script>
+<link rel="stylesheet" type="text/css" href="https://web-static.archive.org/_static/css/banner-styles.css?v=1utQkbB3" />
+<link rel="stylesheet" type="text/css" href="https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv" />
+<!-- End Wayback Rewrite JS Include -->
+
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<title>C Foreign Function Interface - Haxe</title>
+<link rel="stylesheet" type="text/css" href="/web/20170621163642cs_/http://old.haxe.org/css/haxe2.css"/>
+<link rel="stylesheet" type="text/css" href="/web/20170621163642cs_/http://old.haxe.org/css/haxe2_gsearch.css"/>
+<link rel="icon" href="/web/20170621163642im_/http://old.haxe.org/img/haxe2/favicon.ico" type="image/x-icon"/>
+
+<script type="text/javascript" src="/web/20170621163642js_/http://old.haxe.org/app.js"></script>
+
+	<link href="https://web.archive.org/web/20170621163642cs_/http://fonts.googleapis.com/css?family=Montserrat|PT+Serif+Caption:400,400italic" rel="stylesheet" type="text/css"/>
+	<link href="https://web.archive.org/web/20170621163642cs_/http://fonts.googleapis.com/css?family=Strait" rel="stylesheet" type="text/css"/>
+	<meta property="og:image" content="https://web.archive.org/web/20170621163642im_/http://haxe.orgimg/haxe2/logo.jpg"/>
+	</head>
+
+	<body class="user_offline"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;" toolbar-mode="auto">
+<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
+<div id="donato" style="position:relative;width:100%;height:0;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20170621163642/http%3A//old.haxe.org/doc/cpp/ffi%3Flang%3Den"
+	    scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><div id="wm-ipp-inside">
+  <div id="wm-toolbar" style="position:relative;display:flex;flex-flow:row nowrap;justify-content:space-between;" nav="async">
+    <div id="wm-logo" style="/*width:110px;*/padding-top:12px;">
+      <a href="/web/" title="Wayback Machine home page"><img src="https://web-static.archive.org/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="https://web-static.archive.org/_static/images/toolbar/wayback-toolbar-logo-100.png, https://web-static.archive.org/_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, https://web-static.archive.org/_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
+    </div>
+    <div class="c" style="display:flex;flex-flow:column nowrap;justify-content:space-between;flex:1;">
+      <form class="u" style="display:flex;flex-direction:row;flex-wrap:nowrap;" target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://old.haxe.org/doc/cpp/ffi?lang=en" onfocus="this.focus();this.select();" style="flex:1;"/><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20170621163642" /><input type="submit" value="Go" />
+      </form>
+      <div style="display:flex;flex-flow:row nowrap;align-items:flex-end;">
+                <div class="s" id="wm-nav-captures" style="flex:1;">
+                    <a class="t" href="/web/20170621163642*/http://old.haxe.org/doc/cpp/ffi?lang=en" title="See a list of every capture for this URL">4 captures</a>
+          <div class="r" title="Timespan for captures of this URL">12 Jun 2014 - 21 Jun 2017</div>
+          </div>
+        <div class="k">
+          <a href="" id="wm-graph-anchor">
+            <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
+              <canvas id="wm-sparkline-canvas" width="775" height="27" border="0"></canvas>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="n">
+      <table>
+        <tbody>
+          <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+          <tr class="m">
+            <td class="b" nowrap="nowrap">May</td>
+            <td class="c" id="displayMonthEl" title="You are here: 16:36:42 Jun 21, 2017">JUN</td>
+            <td class="f" nowrap="nowrap">Jul</td>
+          </tr>
+          <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+          <tr class="d">
+            <td class="b" nowrap="nowrap"><span class="ta"></span></td>
+            <td class="c" id="displayDayEl" style="width:34px;font-size:22px;white-space:nowrap;" title="You are here: 16:36:42 Jun 21, 2017">21</td>
+            <td class="f" nowrap="nowrap"><span class="ta"></span></td>
+          </tr>
+          <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+          <tr class="y">
+            <td class="b" nowrap="nowrap">2016</td>
+            <td class="c" id="displayYearEl" title="You are here: 16:36:42 Jun 21, 2017">2017</td>
+            <td class="f" nowrap="nowrap">2018</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="r" style="display:flex;flex-flow:column nowrap;align-items:flex-end;justify-content:space-between;">
+      <div id="wm-btns" style="text-align:right;height:23px;">
+                <span class="xxs">
+          <div id="wm-save-snapshot-success">success</div>
+          <div id="wm-save-snapshot-fail">fail</div>
+          <a id="wm-save-snapshot-open" href="#" title="Share via My Web Archive" >
+            <span class="iconochive-web"></span>
+          </a>
+          <a href="https://archive.org/account/login.php" title="Sign In" id="wm-sign-in">
+            <span class="iconochive-person"></span>
+          </a>
+          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
+        </span>
+                <a class="xxs" href="https://help.archive.org/help/category/the-wayback-machine/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
+        <a id="wm-tb-close" href="#close" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
+      </div>
+      <div id="wm-share" class="xxs">
+        <a href="/web/20170621163642/http://web.archive.org/screenshot/http://old.haxe.org/doc/cpp/ffi?lang=en"
+           id="wm-screenshot"
+           title="screenshot">
+          <span class="wm-icon-screen-shot"></span>
+        </a>
+        <a href="#" id="wm-video" title="video">
+          <span class="iconochive-movies"></span>
+        </a>
+        <a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20170621163642/http://old.haxe.org:80/doc/cpp/ffi?lang=en" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
+        <a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20170621163642/http://old.haxe.org:80/doc/cpp/ffi?lang=en" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
+      </div>
+      <div style="padding-right:2px;text-align:right;white-space:nowrap;">
+        <a id="wm-expand" class="wm-btn wm-closed" href="#expand"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span class="xxs" style="font-size:80%;">About this capture</span></a>
+      </div>
+    </div>
+  </div>
+    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
+        <div id="wm-capinfo-notice" source="api"></div>
+                <div id="wm-capinfo-collected-by" source="api" trigger="hover" token="Md1irWyB1xwWXENOboDY6zXLDTzOxyoHHjIfHVDNow"></div>
+    <div id="wm-capinfo-timestamps">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center;padding:2px 0;" title="Timestamps for the elements of this page">TIMESTAMPS</div>
+    <div>
+      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
+      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="https://web-static.archive.org/_static/images/loading.gif" alt="loading" /></div>
+    </div>
+    </div>
+  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20170621163642/http://old.haxe.org:80/doc/cpp/ffi?lang=en</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(775,27,25,2,"web","http://old.haxe.org/doc/cpp/ffi?lang=en","20170621163642",1996,"https://web-static.archive.org/_static/",["https://web-static.archive.org/_static/css/banner-styles.css?v=1utQkbB3","https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+		<div id="topbar">
+			<div class="topcontent">
+				<div class="login">
+					
+						<a href="#" class="clic" onclick="$('.loginBox').toggle(200)">Login »</a>
+						<div class="loginBox" style="display:none">
+							<p>
+								You can <a href="/web/20170621163642/http://old.haxe.org/wiki/register">register</a> to create an account and edit the pages of the Wiki.
+							</p>
+							<form action="/web/20170621163642/http://old.haxe.org/wiki/login" method="POST">
+								<span class="group"><span class="tfield">User :</span> <input name="user" class="field"/></span>
+								<span class="group"><span class="tfield">Pass :</span> <input type="password" name="pass" class="field"/></span>
+								<input type="hidden" name="url" value="/doc/cpp/ffi"/>
+								<input type="submit" value="OK" class="button"/>
+							</form>
+						</div>
+					
+				</div>
+				<div class="search">
+					<div id="cse-search-form" style="width: 100%;"></div>
+					<script src="https://web.archive.org/web/20170621163642js_/http://www.google.com/jsapi" type="text/javascript"></script>
+					<script type="text/javascript">
+					  google.load('search', '1', {language : 'en', style : google.loader.themes.V2_DEFAULT});
+					  google.setOnLoadCallback(function() {
+					    var customSearchOptions = {};  var customSearchControl = new google.search.CustomSearchControl(
+					      '008143996983163686627:ohovhuovssi', customSearchOptions);
+					    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+					    var options = new google.search.DrawOptions();
+					    options.setAutoComplete(true);
+					    customSearchControl.setAutoCompletionId('008143996983163686627:ohovhuovssi+qptype:1');
+					    options.enableSearchboxOnly("/wiki/search", "s");
+					    customSearchControl.draw('cse-search-form', options);
+					  }, true);
+					</script>
+				</div>
+			</div>
+		</div>
+		<div id="gradient">
+			<div id="site">
+			<div id="head">
+				<a href="/web/20170621163642/http://old.haxe.org/" class="logo">
+					<img src="/web/20170621163642im_/http://old.haxe.org/img/haxe2/logo.png" alt="HaXe logo"/>
+					<h1>One language, everywhere.</h1>
+				</a>
+				<ul id="mainmenu">
+					
+	<li><a href="/web/20170621163642/http://old.haxe.org/">Home</a></li><li><a href="/web/20170621163642/http://old.haxe.org/download">Download</a></li><li class="active"><a href="/web/20170621163642/http://old.haxe.org/doc">Documentation</a></li><li><a href="/web/20170621163642/http://old.haxe.org/com">Community</a></li><li><a href="https://web.archive.org/web/20170621163642/https://groups.google.com/forum/#!forum/haxelang">Forum</a></li><li><a href="https://web.archive.org/web/20170621163642/http://haxe.org/forum/thread/4054">IRC</a></li><li><a href="https://web.archive.org/web/20170621163642/http://api.haxe.org/">API</a></li>
+	
+				</ul>
+				<div class="warning">
+					You are currently visiting an old version of the website, go on newest <a href="https://web.archive.org/web/20170621163642/http://haxe.org/">Haxe.org</a>
+				</div>
+			</div>
+			<div id="content">
+
+				
+
+				
+
+
+<h1 class="title"><a href="/web/20170621163642/http://old.haxe.org/doc/cpp/ffi">C Foreign Function Interface</a></h1>
+
+
+<div class="hierarchy">
+	
+	 <a href="/web/20170621163642/http://old.haxe.org/doc">Documentation</a>
+	
+	 &gt; <a href="/web/20170621163642/http://old.haxe.org/doc/cpp">cpp</a>
+	
+	 &gt; <a href="/web/20170621163642/http://old.haxe.org/doc/cpp/ffi">C Foreign Function Interface</a>
+	
+</div>
+
+
+
+
+
+
+
+
+	
+	<div class="view">
+		<h2><a href="#introduction" name="introduction">Introduction</a></h2>
+<p>This tutorial demonstrates how to call external C/C++ code from a haxe application.  <br/>In many ways, the system is similar to the neko <a href="/web/20170621163642/http://old.haxe.org/doc/neko/ffi" class="intern">C Foreign Function Interface</a>. The main difference is that &quot;value&quot; types are treated as &quot;opaque&quot;. <br/>An example can be found <a href="https://web.archive.org/web/20170621163642/http://haxe.org/doc/cpp/ffi#example" class="extern">at the bottom of this page</a>.</p>
+<h2><a href="#the-quot-value-quot-type" name="the-quot-value-quot-type">The &quot;value&quot; Type</a></h2>
+<p>All arguments and return data used for communicating between the Haxe compiled code and the native library code are declared as type &quot;value&quot;.  On the Neko target, this is a very particular data structure, and the type of element that is referred to by it can be determined by looking directly at the bits in the value variable.  This means that in order for the C++ traget to be able to use the Neko ndll files directly, it would have to convert to and from these Neko values for each CFFI call.  For efficiency reasons, the C++ target does not do this.  Instead, as far as the external library is concerned, the value type is a generic pointer to an unknown type.  </p>
+<p>The Haxe C++ code actually knows that the value type is a pointer to its &quot;hx::Object&quot; structure, from which all classes derive, so the conversion for classes is very simple and fast. For the &quot;non-class&quot; types (Int, Bool, Float, String) the conversion requires the value to be &quot;boxed&quot; inside an object in order to be passed to/from the CFFI.  This is exactly the same procedure that is used for passing &quot;Dynamic&quot; objects within the Haxe C++ code.  As a consequence of this, passing non-class objects to C++ CFFI incurs a small overhead per call.  The special case is the &quot;null&quot; value, which is encoded as the null pointer and is very fast - if your functions have nothing better to return, your should return the null value (alloc_null()).</p>
+<p>Since the actual type of &quot;value&quot; variables is not known by the external code, it is very easy for this external code work with neko too.  When the external code requests the &quot;integer value of this variable&quot;, val_int(x), the external code calls a function that will ultimately call the Neko version of val_int, if the ndll is loaded into a Neko VM, or the C++ version if it is loaded into a C++ program.  This extra function call represents a small overhead when running Neko code like this, however the benefits of being able to use the same ndll on both Neko and C++ targets usually makes this trade-off worth while.</p>
+<h2><a href="#one-ndll-to-bring-them-all-and-in-the-darkness-bind-them" name="one-ndll-to-bring-them-all-and-in-the-darkness-bind-them">One ndll to bring them all and in the darkness bind them</a></h2>
+<p>The C++ ndll files use a technique similar to the windows &quot;delay load&quot; dll binding, along with some macro magic, to allow them to be built without needing to linked against a specific dll or library file.  The host application (neko or the hxcpp binary) must provide a single export symbol, &quot;hx_cffi&quot;, which the ndll file will query for function pointers (this is done by all hxcpp applications).  If this is not found, then it is assumed that the executable is neko, and tries to load the dll &quot;nekoapi.dll&quot;.  This dll exports the &quot;hx_cffi&quot; symbol and is linked against the standard neko cffi library, which requires the neko.dll file to be in the process,  This nekoapi library provides the translation from the opaque pointers to the neko values.  There is no complex logic the determine the location of this nekoapi file, so it generally must be in your library search path (executable search path on windows).  The best way to ensure this is to place it next the neko.dso (neko.dll) that is being used.</p>
+<p>The C++ FFI is available when you &quot;#include &lt;hx/CFFI.h&gt;&quot;, which is distributed with the hxcpp haxelib module.  If you are using a makefile, you can find the current location using something like &quot;haxelib path hxcpp&quot;.  If you are using Visual Studio, it is probably easiest just to hardwire the location in.  Because the system uses opaque values, you don't necessarily need to update your ndll every time you update haxe or the hxcpp module.  You may also consider using the hxcpp build-tool to build your ndlls - more on this later.</p>
+<p>When you include the header file, the CFFI API functions get defined as function pointers. <b>In exactly one of your library files, you should &quot;#define IMPLEMENT_API&quot; before you  &quot;#include &lt;hx/CFFI.h&gt;</b>.  This initializes each function pointer with a &quot;bootstrap&quot; function that will attempt to find the actual function via querying the &quot;hx_cffi&quot; function from the host application.  Once found, the function pointer is moved from the bootstrap function to the actual function, meaning that subsequent calls will go straight to the actual function.  This magic is mostly handled by the code in hx/CFFILoader.h, and in conjunction with hx/CFFIAPI.h, which defined the whole API.  Using macros like this means that no link-library is required - it is done in the header files. </p>
+<h2><a href="#static-linking" name="static-linking">Static Linking</a></h2>
+<p>When generating a static library (as required by iPhone), instead of a dynamic ndll, some care must be taken to ensure the &quot;DEFINE_PRIM&quot; macro works correctly.  Most linkers today will only pull symbols from a static library if there exist in an obj file (ie, c++ file) that has other symbols explicitly required by the application.  Since the CFFI functions are located by name, the linker does not explicitly know they are required, so the exporting DEFINE_PRIM macros will not be linked, and will not export their functions.  To fix this, ensure that there is at least 1 real symbols in each c++ file that is referred to externally.  This can simply be a dummy function, or an &quot;extern int&quot;.  Putting all the CFFI &quot;glue&quot; functions in a single file is not such a bad idea, and reduces this problem to a single symbol.</p>
+<h2><a href="#array-access" name="array-access">Array Access</a></h2>
+<p>One of the differences between neko CFFI and C++ CFFI is how arrays are treated. The neko implementation of arrays naturally allows it to provide and &quot;value *&quot; - pointer to series of elements.  However, this is only available on a C++ executable if the array is an array of Dynamic.  If the array is an array of Int, Bool or Double, then it may be possible to get an array of &quot;double *&quot; etc, which is a very efficient way of accessing the data (it is not possible to access strings like this).  To write efficient code, your ndll should try the val_array_value function (if you are loaded in neko), then one or more of the specific array functions (eg, val_array_double if your haxe code takes an Array&lt;Float&gt;), before falling back to val_array_i if the other options are not available.</p>
+<h2><a href="#bytearray-access" name="bytearray-access">ByteArray Access</a></h2>
+<p>Neko uses &quot;strings&quot; as byte buffers, whereas C++ uses &quot;Array of unsigned char&quot;, since its native string representation is an immutable string of wchar_t.  To access the data as a byte-buffer, you must first use &quot;val_to_buffer&quot; to convert the value handle to a buffer handle.  Using this, you can then call the various buffer manipulation functions.  The different type of handle ensures type checking at compile time.</p>
+<h2><a href="#neko-vs-haxe" name="neko-vs-haxe">Neko vs Haxe</a></h2>
+<p>When haxe runs on the neko vm, it &quot;wraps&quot; the neko string and array values in objects.  The nekoapi.dll file attempts to make this transparent.  In this sense, it is more like a &quot;haxe&quot; CFFI than a &quot;neko&quot; CFFI.</p>
+<h2><a href="#playing-nice-with-garbage-collection" name="playing-nice-with-garbage-collection">Playing Nice with Garbage Collection</a></h2>
+<p>The C++ runtime uses built-in garbage collection that requires cooperation from all haxe threads to synchronize when a garbage collection is performed.  In a single threaded application, it is not really necessary to worry about this, however it is best to do the right thing in case someone wants to use you library in their application.</p>
+<p>The requirements are that before you enter a potentially blocking call (eg, socket select) or perform a long calculation that does not require any interaction with the haxe allocation system, you call gc_enter_blocking and before you call another haxe allocation, you call gc_exit_blocking.  If you are performing a long calculation that may or may not use haxe allocation/callbacks, then you should call gc_safe_point inside your loop.  You can use the C++ &quot;AutoGCBlocking&quot; object to ensure your blocks match your unblocks.</p>
+<p>You do not need to do this for neko, but is does not hurt to leave to code in there.</p>
+<h2><a href="#building-using-the-hxcpp-build-tool" name="building-using-the-hxcpp-build-tool">Building Using the HXCPP Build-tool</a></h2>
+<p>There are a several advantages of using the hxcpp built-tool to build your ndll.  The most obvious ones are that it is cross-platform and low-dependency.  Since it uses neko and haxelib to do the work, you do not have to worry about installers etc, and you can be reasonably sure that anyone who is interested in building a haxe ndll is going to have the required files right there on their machine.  This even applies if you are primarily interested in neko - all you have to do is &quot;haxelib install hxcpp&quot; to get the build tool, and avoids the need to get &quot;make&quot; for windows, or &quot;Visual Studio&quot; for Linux.  The cross-platform library stuff is used for the C++ backend, so you will benefit from any improvements performed for that project.</p>
+<p>Currently, Windows, Linux, Mac iPhoneOS and iPhoneSimulator are supported, and 64 bit versions of Windows, Linux and Mac are planned.</p>
+<p>To use the tool, you need to write a &quot;Build.xml&quot; file to specify the files, extra compile options and extra link options.  This is currently not well documented, but you can see examples in <a href="https://web.archive.org/web/20170621163642/http://code.google.com/p/waxe/source/browse/trunk/src/Build.xml" class="extern">http://code.google.com/p/waxe/source/browse/trunk/src/Build.xml</a> and <a href="https://web.archive.org/web/20170621163642/http://code.google.com/p/nekonme/source/browse/trunk/version2/project/Build.xml" class="extern">http://code.google.com/p/nekonme/source/browse/trunk/version2/project/Build.xml</a>.</p>
+<p>To run the tool, you can use &quot;haxelib run hxcpp Build.xml&quot;.  You can provide additional &quot;defines&quot; to the command line, using -D, eg:  &quot;-Ddebug&quot;,  &quot;-Diphoneos&quot;, &quot;-Diphonesim&quot;, &quot;-Diphone&quot;, are the most useful and have built-in meaning to the tool.</p>
+<p>When you use haxelib in this way, it tries to find a file called &quot;run.n&quot; in your library (ie, hxcpp in this case) install directory.  You can modify the build tool by compiling the source in the hxcpp/built-tool directory.</p>
+<h2><a href="#example" name="example">Example</a></h2><br/>This example shows how to call external C/C++ code from a haxe (hxcpp) application.
+<h3><a href="#1-create-the-following-directory-structure" name="1-create-the-following-directory-structure">1. Create the following directory structure.</a></h3><br/>-A folder named <b>include</b>. (This will contain the hx folder with the header files.)<br/>-A folder named <b>src</b>. (This will contain the cpp and haxe source code.)<br/>-A folder named <b>bin</b>. (This will contain the final application.)
+<h3><a href="#2-copy-the-hx-folder-from-hxcpp-to-the-include-folder" name="2-copy-the-hx-folder-from-hxcpp-to-the-include-folder">2. Copy the hx folder from hxcpp to the include folder. </a></h3><br/>Navigate to your <b>haxelib</b> directory, open the <b>hxcpp</b> folder and copy the <b>hx</b> folder to the <b>include</b> folder from this example. <br/>The hx folder can for instance be found in lib\hxcpp\2,10\include\. <br/>(If you don't have hxcpp installed yet, first run &quot;<em>haxelib install hxcpp</em>&quot; from command line.)
+<h3><a href="#3-write-the-cpp-and-haxe-source-code" name="3-write-the-cpp-and-haxe-source-code">3. Write the cpp and haxe source code.</a></h3><br/>Create a file named <b>test.cpp</b> inside the <b>src</b> folder. The contents of this file has been explained in the introduction of this page.<br/><pre class="haxe">#define IMPLEMENT_API
+#include &lt;hx/CFFI<span class="number">.</span>h&gt;
+
+#include &lt;stdio<span class="number">.</span>h&gt;
+#include &lt;stdlib<span class="number">.</span>h&gt;
+#include &lt;stdarg<span class="number">.</span>h&gt;
+#include &lt;string<span class="number">.</span>h&gt;
+<span class="kwd">extern</span> <span class="string">"C"</span> <span class="op">{</span>
+    value sum<span class="op">(</span>value a, value b<span class="op">)</span>
+    <span class="op">{</span>
+
+        <span class="kwd">if</span><span class="op">(</span> !val_is_int<span class="op">(</span>a<span class="op">)</span> || !val_is_int<span class="op">(</span>b<span class="op">)</span> <span class="op">)</span> <span class="kwd">return</span> val_null;
+        <span class="kwd">return</span> alloc_int<span class="op">(</span>val_int<span class="op">(</span>a<span class="op">)</span> + val_int<span class="op">(</span>b<span class="op">)</span><span class="op">)</span>;
+    <span class="op">}</span>
+<span class="op">}</span>
+DEFINE_PRIM<span class="op">(</span> sum, <span class="number">2</span> <span class="op">)</span>;</pre>
+<p>Create a file named <b>Main.hx</b> inside the <b>src</b> folder.<br/><pre class="haxe"><span class="kwd">class</span> Main 
+<span class="op">{</span>
+    <span class="comment">//This loads the test.ndll and 'binds' the Haxe function 'sum' to the C function 'sum'.</span>
+    <span class="comment">//Int-&gt;Int-&gt;Int is Haxe syntax for typing a function that takes 2 integers as arguments and that returns an integer.</span>
+    <span class="kwd">static</span> <span class="kwd">var</span> sum:<span class="type">Int</span>-&gt;<span class="type">Int</span>-&gt;<span class="type">Int</span> = cpp<span class="number">.</span>Lib<span class="number">.</span>load<span class="op">(</span><span class="string">"test"</span>,<span class="string">"sum"</span>,<span class="number">2</span><span class="op">)</span>;
+    <span class="kwd">static</span> <span class="kwd">function</span> main<span class="op">(</span><span class="op">)</span>
+    <span class="op">{</span>
+        trace<span class="op">(</span>sum<span class="op">(</span><span class="number">1</span>,<span class="number">2</span><span class="op">)</span><span class="op">)</span>;
+    <span class="op">}</span>
+<span class="op">}</span></pre></p>
+<h3><a href="#4-compile-the-source-code" name="4-compile-the-source-code">4. Compile the source code.</a></h3><br/>Let's compile <b>test.cpp</b> to <b>test.ndll </b>with:<br/><pre class="haxe">g++ ./src/test<span class="number">.</span>cpp -shared -o ./bin/test<span class="number">.</span>ndll -I./include</pre><br/>and <b>Main.hx</b> to <b>Main.exe</b> with:<br/><pre class="haxe">haxe -cp src -main Main -cpp bin</pre>
+<h3><a href="#5-test-the-final-application" name="5-test-the-final-application">5. Test the final application.</a></h3><br/>If you navigate to the <b>bin</b> folder and execute <b>Main</b>(.exe) you should see printed to your console:<br/><pre class="haxe">Main<span class="number">.</span>hx:<span class="number">8</span>: <span class="number">3</span></pre>
+<h3><a href="#6-automate-the-build-process" name="6-automate-the-build-process">6. Automate the build process.</a></h3><br/>You can store the compile and test commands in a shell script.<br/>For windows create a file named <b>build.bat</b> next to your <b>src</b> folder:<br/><pre class="haxe">@echo off
+g++ ./src/test<span class="number">.</span>cpp -shared -o ./bin/test<span class="number">.</span>ndll -I./include
+haxe -cp src -main Main -cpp bin
+cd bin
+Main<span class="number">.</span>exe
+pause</pre><br/>For linux or mac create a file named <b>build.sh</b> next to your <b>src</b> folder:<br/><pre class="haxe">#!/bin/bash
+g++ ./src/test<span class="number">.</span>cpp -shared -o ./bin/test<span class="number">.</span>ndll -I./include
+haxe -cp src -main Main -cpp bin
+bin/Main</pre>
+<h3><a href="#7-troubleshooting" name="7-troubleshooting">7. Troubleshooting</a></h3><ul><li>'Error : Could not load module test@sum__2'</li></ul>
+<p>You are on a 64-bit machine, add ' -D HXCPP_M64' to the end of your build command.</p>
+<pre>haxe -cp src -main Main -cpp bin -D HXCPP_M64</pre>
+<ul><li>'g++' is not recognized as an internal or external command,operable program or batch file.</li></ul>
+<p>In windows you'll see this error message when you have no c++ compiler installed or in PATH. <br/>(You can for example use <a href="https://web.archive.org/web/20170621163642/http://www.mingw.org/" class="extern">mingw</a> but there are many others as well.)</p>
+<ul><li>In file included from ./include/hx/CFFI.h:73:0, from ./src/test.cpp:2:<br/>./include/hx/CFFILoader.h: In function 'void* LoadFunc(const char*)':<br/>./include/hx/CFFILoader.h:592:57: warning: deprecated conversion from string constant to 'char*' [-Wwrite-strings]<br/>./include/hx/CFFILoader.h:592:57: warning: deprecated conversion from string constant to 'char*' [-Wwrite-strings]</li></ul>
+<p>You can safely ignore these warnings or add <b>-w</b> to the build command to suppress any warnings:<br/><pre class="haxe">g++ ./src/test<span class="number">.</span>cpp -shared -o ./bin/test<span class="number">.</span>ndll -I./include -w</pre></p>
+
+	</div>
+	<div class="version">
+		version #20049, modified 2014-04-09 07:43:31 by <a href="/web/20170621163642/http://old.haxe.org/wiki/user?name=indolering">indolering</a>
+	</div>
+
+
+
+
+<ul class="buttons">
+	
+	
+	
+	
+	
+	<li><a href="/web/20170621163642/http://old.haxe.org/wiki/history?path=doc/cpp/ffi;lang=en">history</a></li>
+	<li><a href="/web/20170621163642/http://old.haxe.org/wiki/backlinks?path=doc/cpp/ffi;lang=en">backlinks</a></li>
+	
+</ul>
+
+
+
+
+
+
+
+			</div>
+
+			<div class="langs">
+				<ul>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=en" class="on current">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_en.gif" alt="en"/>
+	 <span class="name">English</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=fr" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_fr.gif" alt="fr"/>
+	 <span class="name">Français</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=ru" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_ru.gif" alt="ru"/>
+	 <span class="name">Pусский</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=jp" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_jp.gif" alt="jp"/>
+	 <span class="name">日本語</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=nl" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_nl.gif" alt="nl"/>
+	 <span class="name">Nederlands</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=de" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_de.gif" alt="de"/>
+	 <span class="name">Deutsch</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=es" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_es.gif" alt="es"/>
+	 <span class="name">Español</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=it" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_it.gif" alt="it"/>
+	 <span class="name">Italian</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=pl" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_pl.gif" alt="pl"/>
+	 <span class="name">Polski</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=pt" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_pt.gif" alt="pt"/>
+	 <span class="name">Português</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=cn" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_cn.gif" alt="cn"/>
+	 <span class="name">中文</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=ro" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_ro.gif" alt="ro"/>
+	 <span class="name">Română</span></a></li>
+				
+				<li><a href="/web/20170621163642/http://old.haxe.org/wiki/setlang?url=/doc/cpp/ffi;lang=kr" class="off">
+	<img src="/web/20170621163642im_/http://old.haxe.org/img/flags/flag_kr.gif" alt="kr"/>
+	 <span class="name">Korean</span></a></li>
+				
+				</ul>
+			</div>
+
+		</div>
+		</div>
+		<div id="foot">
+			<div id="footcontent">
+				<div class="list">
+					<h2>Menu</h2>
+					<ul id="footmenu">
+						
+	<li><a href="/web/20170621163642/http://old.haxe.org/">Home</a></li><li><a href="/web/20170621163642/http://old.haxe.org/download">Download</a></li><li class="active"><a href="/web/20170621163642/http://old.haxe.org/doc">Documentation</a></li><li><a href="/web/20170621163642/http://old.haxe.org/com">Community</a></li><li><a href="https://web.archive.org/web/20170621163642/https://groups.google.com/forum/#!forum/haxelang">Forum</a></li><li><a href="https://web.archive.org/web/20170621163642/http://haxe.org/forum/thread/4054">IRC</a></li><li><a href="https://web.archive.org/web/20170621163642/http://api.haxe.org/">API</a></li>
+	
+					</ul>
+				</div>
+				<div class="list">
+					<h2>Options</h2>
+					<ul id="footmenu">
+						
+						<li><a href="/web/20170621163642/http://old.haxe.org/wiki/map">Wiki Map</a></li>
+						
+						<li><a href="/web/20170621163642/http://old.haxe.org/wiki/history">Latest Changes</a></li>
+						
+						
+						
+						<li><a href="#" class="clic" onclick="$('.loginBox').toggle(200)">Login</a></li>
+						
+						
+	
+	
+					</ul>
+				</div>
+				<div class="list copy">
+					<img src="/web/20170621163642im_/http://old.haxe.org/img/haxe2/logo_foot.png"/>
+					<p>All rights reserved. <a href="https://web.archive.org/web/20170621163642/http://haxe.org/">Powered by Haxe</a></p>
+
+					<script type="text/javascript">
+
+					  var _gaq = _gaq || [];
+					  _gaq.push(['_setAccount', 'UA-30943311-1']);
+					  _gaq.push(['_setDomainName', 'haxe.org']);
+					  _gaq.push(['_trackPageview']);
+
+					  (function() {
+					    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					    ga.src = ('https:' == document.location.protocol ? 'https://web.archive.org/web/20170621163642/https://ssl' : 'https://web.archive.org/web/20170621163642/http://www') + '.google-analytics.com/ga.js';
+					    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+					  })();
+
+					</script>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+<!--
+     FILE ARCHIVED ON 16:36:42 Jun 21, 2017 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 14:59:11 Oct 04, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 0.357
+  exclusion.robots: 0.029
+  exclusion.robots.policy: 0.022
+  esindex: 0.007
+  cdx.remote: 15.523
+  LoadShardBlock: 54.889 (3)
+  PetaboxLoader3.datanode: 75.795 (4)
+  load_resource: 288.44
+  PetaboxLoader3.resolve: 237.891
+  nav: 0.135 (6)
+-->
