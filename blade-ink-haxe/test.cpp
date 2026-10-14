@@ -1,5 +1,5 @@
 #define IMPLEMENT_API
-//#include <hx/CFFI.h>
+#include <hx/CFFI.h>
 
 
 #include <stddef.h>
@@ -11,7 +11,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <bink.h>
-/*
+
 extern "C" {
     value sum(value a, value b)
     {
@@ -21,7 +21,7 @@ extern "C" {
     }
 }
 DEFINE_PRIM( sum, 2 );
-*/
+
 
 void finish(int rc, BINK_Story *story, char *err_msg) {
     bink_cstring_free(err_msg);
@@ -108,7 +108,7 @@ int main(void) {
     char *err_msg = NULL;
     char *line = NULL;
     printf("Story is starting.\n");
-    char *json_string = read_json_file("./single-choice.ink.json");
+    char *json_string = read_json_file("./test.ink.json");
     if(json_string == NULL)
         exit(EXIT_FAILURE);
 
@@ -119,6 +119,7 @@ int main(void) {
     bool end = false;
 
     while(!end) {
+        system("clear");
         bool can_continue;
         ret = bink_story_can_continue(story, &can_continue, &err_msg);
         check_ret(ret, story, err_msg);
@@ -134,6 +135,7 @@ int main(void) {
         }
 
         // Obtain and print choices
+        int newChoice = 1000;
         size_t len = 0;
         ret = bink_story_get_current_choices(story, &choices, &len, &err_msg);
         check_ret(ret, story, err_msg);
@@ -143,13 +145,23 @@ int main(void) {
             print_choices(choices, len);
             printf("\n");
             bink_choices_free(choices);
-
-            // Always choose the first option
-            ret = bink_story_choose_choice_index(story, 0, &err_msg);
+            int newChoice = -1;
+            while(newChoice > len || newChoice < 1){
+                char line[256];
+                printf("Input> ");
+                if (fgets(line, sizeof(line), stdin)) {
+                    if (1 == sscanf(line, " %d", &newChoice)) {
+                        printf(" < input received: %d\n\n", newChoice);
+                    }
+                }
+            }
+            ret = bink_story_choose_choice_index(story, newChoice-1, &err_msg);
             check_ret(ret, story, err_msg);
         } else {
             end = true;
         }
+
+        
 
     }
 
