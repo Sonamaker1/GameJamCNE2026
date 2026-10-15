@@ -147,9 +147,12 @@ size_t helper_story_get_choices_length(BINK_Story *story) {
     return len; //len is the only value still important to main loop after printing
 }
 
-//void helper_story_handle_choices(char * line){
-//    BINK_Choices *choices = NULL;
-//}
+void helper_story_make_choice(BINK_Story **story, int choice_to_make, char *err_msg){
+    uint32_t ret = BINK_OK;
+    ret = bink_story_choose_choice_index(*story, choice_to_make, &err_msg);
+    check_ret(ret, *story, err_msg);
+}
+
 
 int main(void) {
     uint32_t ret = BINK_OK;
@@ -189,8 +192,7 @@ int main(void) {
                     }
                 }
             }
-            ret = bink_story_choose_choice_index(story, newChoice-1, &err_msg);
-            check_ret(ret, story, err_msg);
+            helper_story_make_choice(&story, newChoice-1, err_msg);
         }
     }
 
