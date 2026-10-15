@@ -10,7 +10,7 @@ Lets talk it out.
     - MAUD: You are a merely an afterimage of the gray loop. As am I. 
     - MAUD: Despite this, I can confidently state even THIS instance of you has had decisions plenty, no matter how trivial you perceived them to be.
     - MAUD: ...
-    - MAUD: Perhaps it will comfort you that this meeting was not one of your choices.
+    - MAUD: Perhaps it will comfort you to know that this meeting was not one of your choices.
         * [...] -> speechend
 
  * (accept) ->
