@@ -86,10 +86,6 @@ void assert_cont(BINK_Story *story, char *expected) {
     bink_cstring_free(line);
 }
 
-int select_story_by_id(){
-    return 0;
-}
-
 void init_story(BINK_Story **story, const char* filename, char *err_msg){
     uint32_t ret = BINK_OK;
     printf("Story is starting.\n");
@@ -153,17 +149,33 @@ void helper_story_make_choice(BINK_Story **story, int choice_to_make, char *err_
     check_ret(ret, *story, err_msg);
 }
 
+int select_story_by_id(){
+    return 0;
+}
 
-int main(void) {
-    uint32_t ret = BINK_OK;
+BINK_Story * helper_create_story(const char* filename, char *err_msg){
     BINK_Story *story = NULL;
-    BINK_Choices *choices = NULL;
-    char *err_msg = NULL;
-    char *line = NULL;
-    
-    init_story(&story, "./test.ink.json", err_msg);
-    bool end = false;
+    init_story(&story, filename, err_msg);
+    return story;
+}
 
+int cplusplus_example_only_input_prompter(int len){
+    int newChoice = -1;
+    while(newChoice > len || newChoice < 1){
+        char inputLine[256]; 
+        printf("Input> ");
+        if (fgets(inputLine, sizeof(inputLine), stdin)) {
+            if (1 == sscanf(inputLine, " %d", &newChoice)) {
+                printf(" < input received: %d\n\n", newChoice);
+            }
+        }
+    }
+    return newChoice;
+}
+
+void cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg){
+    char *line = NULL;
+    bool end = false;
     while(!end) {
         system("clear");
         bool can_continue;
@@ -182,21 +194,16 @@ int main(void) {
 
         if (!end) {
             printf("\n");
-            int newChoice = -1;
-            while(newChoice > len || newChoice < 1){
-                char inputLine[256]; //Reminder: input length must be enforced on haxe side
-                printf("Input> ");
-                if (fgets(inputLine, sizeof(inputLine), stdin)) {
-                    if (1 == sscanf(inputLine, " %d", &newChoice)) {
-                        printf(" < input received: %d\n\n", newChoice);
-                    }
-                }
-            }
+            int newChoice = cplusplus_example_only_input_prompter(len);
             helper_story_make_choice(&story, newChoice-1, err_msg);
         }
     }
+}
 
-    printf("Story ended ok.\n");
-
+int main(void) {
+    char *err_msg = NULL;
+    BINK_Story *story = helper_create_story("./test.ink.json", err_msg);
+    cplusplus_example_only_main_loop(story, err_msg);  
+    printf("Stories ended ok.\n");
     finish(EXIT_SUCCESS, story, err_msg);
 }
