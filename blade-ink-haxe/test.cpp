@@ -100,6 +100,39 @@ void assert_cont(BINK_Story *story, char *expected) {
     bink_cstring_free(line);
 }
 
+int select_story_by_id(){
+    return 0;
+}
+
+void init_story(BINK_Story **story, const char* filename, char *err_msg){
+    uint32_t ret = BINK_OK;
+    printf("Story is starting.\n");
+    char *json_string = read_json_file(filename);
+    if(json_string == NULL)
+        exit(EXIT_FAILURE);
+
+    ret = bink_story_new(story, json_string, &err_msg);
+    check_ret(ret, *story, err_msg);
+    free(json_string);
+}
+
+void helper_can_continue(BINK_Story **story, bool *ret_continue, char *err_msg){
+    uint32_t ret = BINK_OK;
+    ret = bink_story_can_continue(*story, ret_continue, &err_msg);
+    check_ret(ret, *story, err_msg);
+}
+
+char* helper_story_continue(BINK_Story **story, char *err_msg){
+    char *line = NULL;
+    uint32_t ret = BINK_OK;
+    ret = bink_story_cont(*story, &line, &err_msg);
+    check_ret(ret, *story, err_msg);
+    return line;
+}
+
+void helper_story_continue_free(char * line){
+    bink_cstring_free(line);
+}
 
 int main(void) {
     uint32_t ret = BINK_OK;
@@ -107,35 +140,23 @@ int main(void) {
     BINK_Choices *choices = NULL;
     char *err_msg = NULL;
     char *line = NULL;
-    printf("Story is starting.\n");
-    char *json_string = read_json_file("./test.ink.json");
-    if(json_string == NULL)
-        exit(EXIT_FAILURE);
-
-    ret = bink_story_new(&story, json_string, &err_msg);
-    check_ret(ret, story, err_msg);
-    free(json_string);
-
+    
+    init_story(&story, "./test.ink.json", err_msg);
     bool end = false;
 
     while(!end) {
         system("clear");
         bool can_continue;
-        ret = bink_story_can_continue(story, &can_continue, &err_msg);
-        check_ret(ret, story, err_msg);
-
+        helper_can_continue(&story, &can_continue, err_msg);
+        
         while (can_continue) {
-            ret = bink_story_cont(story, &line, &err_msg);
-            check_ret(ret, story, err_msg);
+            line = helper_story_continue(&story, err_msg);
             puts(line);
-            bink_cstring_free(line);
-
-            ret = bink_story_can_continue(story, &can_continue, &err_msg);
-            check_ret(ret, story, err_msg);
+            helper_story_continue_free(line);
+            helper_can_continue(&story, &can_continue, err_msg);        
         }
 
         // Obtain and print choices
-        int newChoice = 1000;
         size_t len = 0;
         ret = bink_story_get_current_choices(story, &choices, &len, &err_msg);
         check_ret(ret, story, err_msg);
@@ -160,9 +181,6 @@ int main(void) {
         } else {
             end = true;
         }
-
-        
-
     }
 
     printf("Story ended ok.\n");
