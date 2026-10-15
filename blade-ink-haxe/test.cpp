@@ -135,7 +135,7 @@ size_t helper_story_get_choices_length(BINK_Story *story) {
         }
 
         //TODO: deconstruct for loop and get the values of text to haxe somehow 
-        printf("%lu. %s\n", i+1, text);
+        printf("[ %lu. ] %s\n", i+1, text);
         bink_cstring_free(text);
     }
     
@@ -166,50 +166,24 @@ int cplusplus_example_only_input_prompter(int len){
         printf("Input> ");
         if (fgets(inputLine, sizeof(inputLine), stdin)) {
             if (1 == sscanf(inputLine, " %d", &newChoice)) {
-                printf(" < input received: %d\n\n", newChoice);
+                printf(" < input received: %d\n", newChoice);
             }
         }
     }
     return newChoice;
 }
 
-void cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg){
+bool cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg){
     char *line = NULL;
     bool end = false;
-    while(!end) {
-        system("clear");
-        bool can_continue;
-        helper_can_continue(&story, &can_continue, err_msg);
-        
-        while (can_continue) {
-            line = helper_story_continue(&story, err_msg);
-            puts(line);
-            helper_story_continue_free(line);
-            helper_can_continue(&story, &can_continue, err_msg);        
-        }
-
-        // Obtain and print choices
-        size_t len = helper_story_get_choices_length(story);
-        end = len == 0;
-
-        if (!end) {
-            printf("\n");
-            int newChoice = cplusplus_example_only_input_prompter(len);
-            helper_story_make_choice(&story, newChoice-1, err_msg);
-        }
-    }
-}
-
-bool haxe_deconstructed_loop(BINK_Story *story, char *err_msg){
-    char *line = NULL;
-    bool end = false;
-    system("clear");
+    //system("clear");
     bool can_continue;
     helper_can_continue(&story, &can_continue, err_msg);
     
     while (can_continue) {
         line = helper_story_continue(&story, err_msg);
-        puts(line);
+        int len_line = strlen(line);
+        printf("%.*s\n", len_line-1, line);
         helper_story_continue_free(line);
         helper_can_continue(&story, &can_continue, err_msg);        
     }
@@ -229,13 +203,13 @@ bool haxe_deconstructed_loop(BINK_Story *story, char *err_msg){
 int main(void) {
     char *err_msg = NULL;
     BINK_Story *story = helper_create_story("./test.ink.json", err_msg);
-    bool end = haxe_deconstructed_loop(story, err_msg);
+    bool end = cplusplus_example_only_main_loop(story, err_msg);
 
     // Test. This while loop will be fully handled on the haxe side when I'm done.
     while(!end){
-        end = haxe_deconstructed_loop(story, err_msg);
+        end = cplusplus_example_only_main_loop(story, err_msg);
     }
     
-    printf("Stories ended ok.\n");
+    printf("\nStories ended ok.\n");
     finish(EXIT_SUCCESS, story, err_msg);
 }
