@@ -200,10 +200,42 @@ void cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg){
     }
 }
 
+bool haxe_deconstructed_loop(BINK_Story *story, char *err_msg){
+    char *line = NULL;
+    bool end = false;
+    system("clear");
+    bool can_continue;
+    helper_can_continue(&story, &can_continue, err_msg);
+    
+    while (can_continue) {
+        line = helper_story_continue(&story, err_msg);
+        puts(line);
+        helper_story_continue_free(line);
+        helper_can_continue(&story, &can_continue, err_msg);        
+    }
+
+    // Obtain and print choices
+    size_t len = helper_story_get_choices_length(story);
+    end = len == 0;
+
+    if (!end) {
+        printf("\n");
+        int newChoice = cplusplus_example_only_input_prompter(len);
+        helper_story_make_choice(&story, newChoice-1, err_msg);
+    }
+    return end;
+}
+
 int main(void) {
     char *err_msg = NULL;
     BINK_Story *story = helper_create_story("./test.ink.json", err_msg);
-    cplusplus_example_only_main_loop(story, err_msg);  
+    bool end = haxe_deconstructed_loop(story, err_msg);
+
+    // Test. This while loop will be fully handled on the haxe side when I'm done.
+    while(!end){
+        end = haxe_deconstructed_loop(story, err_msg);
+    }
+    
     printf("Stories ended ok.\n");
     finish(EXIT_SUCCESS, story, err_msg);
 }
