@@ -12,6 +12,15 @@
 #include <string.h>
 #include <bink.h>
 
+#define BINK_HAXE_NOT_FOUND 404
+#define BINK_HAXE_CAN_CONTINUE 302
+#define BINK_HAXE_CHOICE_FOUND 200
+#define BINK_HAXE_UNKNOWN 321
+#define BINK_HAXE_FAILURE 417
+#define BINK_HAXE_TEAPOT 418
+#define BINK_HAXE_END 204
+
+
 extern "C" {
     value sum(value a, value b)
     {
@@ -98,10 +107,12 @@ void init_story(BINK_Story **story, const char* filename, char *err_msg){
     free(json_string);
 }
 
-void helper_can_continue(BINK_Story **story, bool *ret_continue, char *err_msg){
+bool helper_can_continue(BINK_Story **story, char *err_msg){
+    bool can_continue;
     uint32_t ret = BINK_OK;
-    ret = bink_story_can_continue(*story, ret_continue, &err_msg);
+    ret = bink_story_can_continue(*story, &can_continue, &err_msg);
     check_ret(ret, *story, err_msg);
+    return can_continue;
 }
 
 char* helper_story_continue(BINK_Story **story, char *err_msg){
@@ -173,41 +184,72 @@ int cplusplus_example_only_input_prompter(int len){
     return newChoice;
 }
 
-bool cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg){
+char* cplusplus_example_only_secondary_loop(BINK_Story *story, char *err_msg){
     char *line = NULL;
-    bool end = false;
+    line = helper_story_continue(&story, err_msg);
+    return line;  
+}
+
+/*
+#define BINK_HAXE_NOT_FOUND 404
+#define BINK_HAXE_CAN_CONTINUE 302
+#define BINK_HAXE_CHOICE_FOUND 200
+#define BINK_HAXE_UNKNOWN 321
+#define BINK_HAXE_FAILURE 417
+#define BINK_HAXE_TEAPOT 418
+#define BINK_HAXE_END 204
+*/
+
+int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_step ){
     //system("clear");
-    bool can_continue;
-    helper_can_continue(&story, &can_continue, err_msg);
+    bool can_continue = helper_can_continue(&story, err_msg);
+
+    if (do_step == BINK_HAXE_CAN_CONTINUE || can_continue) {
+        char *line = NULL;
     
-    while (can_continue) {
-        line = helper_story_continue(&story, err_msg);
+        line = cplusplus_example_only_secondary_loop(story, err_msg);
+        
         int len_line = strlen(line);
         printf("%.*s\n", len_line-1, line);
         helper_story_continue_free(line);
-        helper_can_continue(&story, &can_continue, err_msg);        
-    }
 
-    // Obtain and print choices
-    size_t len = helper_story_get_choices_length(story);
-    end = len == 0;
-
-    if (!end) {
-        printf("\n");
-        int newChoice = cplusplus_example_only_input_prompter(len);
-        helper_story_make_choice(&story, newChoice-1, err_msg);
+        can_continue = helper_can_continue(&story, err_msg);    
+        
+        if(can_continue){
+            return BINK_HAXE_CAN_CONTINUE;
+        }
+        else{
+            return BINK_HAXE_CHOICE_FOUND;
+        }
     }
-    return end;
+    
+    if (do_step == BINK_HAXE_CHOICE_FOUND) {
+        bool end = false;
+        // Obtain and print choices
+        size_t len = helper_story_get_choices_length(story);
+        end = len == 0;
+
+        if (!end) {
+            printf("\n");
+            int newChoice = cplusplus_example_only_input_prompter(len);
+            helper_story_make_choice(&story, newChoice-1, err_msg);
+            return BINK_HAXE_CHOICE_FOUND;
+        }
+
+        return BINK_HAXE_END;
+    }
+    
+    return BINK_HAXE_UNKNOWN;
 }
 
 int main(void) {
     char *err_msg = NULL;
     BINK_Story *story = helper_create_story("./test.ink.json", err_msg);
-    bool end = cplusplus_example_only_main_loop(story, err_msg);
+    int return_code = cplusplus_example_only_main_loop(story, err_msg, BINK_HAXE_CHOICE_FOUND);
 
     // Test. This while loop will be fully handled on the haxe side when I'm done.
-    while(!end){
-        end = cplusplus_example_only_main_loop(story, err_msg);
+    while(return_code != BINK_HAXE_END && return_code != BINK_HAXE_FAILURE && return_code != BINK_HAXE_UNKNOWN){
+        return_code = cplusplus_example_only_main_loop(story, err_msg, return_code);
     }
     
     printf("\nStories ended ok.\n");
