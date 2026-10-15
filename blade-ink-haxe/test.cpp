@@ -22,15 +22,7 @@
 #define BINK_HAXE_END 204
 
 
-extern "C" {
-    value sum(value a, value b)
-    {
 
-        if( !val_is_int(a) || !val_is_int(b) ) return val_null;
-        return alloc_int(val_int(a) + val_int(b));
-    }
-}
-DEFINE_PRIM( sum, 2 );
 
 
 void finish(int rc, BINK_Story *story, char *err_msg) {
@@ -128,32 +120,9 @@ void helper_story_continue_free(char * line){
     bink_cstring_free(line);
 }
 
-size_t helper_story_get_choices_length(BINK_Story *story) {
-    BINK_Choices *choices = NULL;
-    uint32_t ret = BINK_OK;
-    char *err_msg = NULL;
-    size_t len = 0;
+//size_t helper_story_get_choices_length(BINK_Story *story) {
 
-    ret = bink_story_get_current_choices(story, &choices, &len, &err_msg);
-    check_ret(ret, story, err_msg);
-
-    for (size_t i=0; i < len; i++) {
-        char *text = NULL;
-        char *err_msg = NULL;
-        int ret = bink_choices_get_text(choices, i, &text, &err_msg);
-        if (ret != BINK_OK) {
-            finish(EXIT_FAILURE, NULL, err_msg);
-            return i; // index+1 of last valid choice
-        }
-
-        //TODO: deconstruct for loop and get the values of text to haxe somehow 
-        printf("[ %lu. ] %s\n", i+1, text);
-        bink_cstring_free(text);
-    }
-    
-    bink_choices_free(choices);
-    return len; //len is the only value still important to main loop after printing
-}
+//}
 
 void helper_story_make_choice(BINK_Story **story, int choice_to_make, char *err_msg){
     uint32_t ret = BINK_OK;
@@ -184,6 +153,18 @@ int cplusplus_example_only_input_prompter(int len){
     }
     return newChoice;
 }
+
+// Copy into the global string buffer (up to 2000 characters at a time)
+void set_last_text(char*){
+    
+} 
+
+// Whatever haxe uses for string
+/*
+char* get_last_text(){
+
+}
+*/
 
 char* cplusplus_example_only_secondary_loop(BINK_Story *story, char *err_msg){
     char *line = NULL;
@@ -227,8 +208,37 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
     
     if (do_step == BINK_HAXE_PARTIAL_CHOICE) {
         bool end = false;
+        
+        // kinda inefficient to keep allocating a choices object but idk what else to do  
         // Obtain and print choices
-        size_t len = helper_story_get_choices_length(story);
+        // size_t len = helper_story_get_choices_length(story);
+        BINK_Choices *choices = NULL;
+        uint32_t ret = BINK_OK;
+        char *err_msg = NULL;
+        size_t len = 0;
+
+        
+        ret = bink_story_get_current_choices(story, &choices, &len, &err_msg);
+        check_ret(ret, story, err_msg);
+
+        if (index < len){
+            char *text = NULL;
+            char *err_msg = NULL;
+            int ret = bink_choices_get_text(choices, index, &text, &err_msg);
+            if (ret != BINK_OK) {
+                finish(EXIT_FAILURE, NULL, err_msg);
+                len = index; // index+1 of last valid choice
+            }
+
+            //TODO: deconstruct for loop and get the values of text to haxe somehow 
+            printf("[ %lu. ] %s\n", index+1, text);
+            bink_cstring_free(text);
+            bink_choices_free(choices);
+            return BINK_HAXE_PARTIAL_CHOICE;
+        }
+        
+        bink_choices_free(choices);
+        
         end = len == 0;
 
         if (!end) {
@@ -244,21 +254,22 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
     return BINK_HAXE_UNKNOWN;
 }
 
+
 int main(void) {
     char *err_msg = NULL;
     BINK_Story *story = helper_create_story("./test.ink.json", err_msg);
-    int choice_index = 0;
+    int choice_index = -1;
     int return_code = cplusplus_example_only_main_loop(story, err_msg, BINK_HAXE_TEAPOT, choice_index);
     
     // Test. This while loop will be fully handled on the haxe side when I'm done.
     while(return_code != BINK_HAXE_END && return_code != BINK_HAXE_FAILURE && return_code != BINK_HAXE_UNKNOWN){
         if(return_code == BINK_HAXE_PARTIAL_CHOICE){
-            printf("iterating choice %d to check %d\n", choice_index, choice_index+1);
+            //printf("iterating choice %d to check %d\n", choice_index, choice_index+1);
             choice_index++;
         }
         else if(return_code==BINK_HAXE_CHOICE_FOUND){
-            printf("resetting choice %d to zero\n", choice_index);
-            choice_index = 0;
+            //printf("resetting choice %d\n", choice_index);
+            choice_index = -1;
         }
         return_code = cplusplus_example_only_main_loop(story, err_msg, return_code, choice_index);
         
@@ -266,4 +277,27 @@ int main(void) {
     
     printf("\nStories ended ok.\n");
     finish(EXIT_SUCCESS, story, err_msg);
+    return 0;
 }
+
+extern "C" {
+    value sum(value a, value b)
+    {
+
+        if( !val_is_int(a) || !val_is_int(b) ) return val_null;
+        return alloc_int(val_int(a) + val_int(b));
+    }
+
+    value getStringTest(value a)
+    {
+        if( !val_is_buffer(a) ) return val_null;
+        return a;
+    }
+
+    void doStuff()
+    {
+        int ret = main();
+    }
+}
+DEFINE_PRIM( sum, 2 );
+DEFINE_PRIM( getStringTest, 1 );
