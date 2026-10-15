@@ -15,6 +15,7 @@
 #define BINK_HAXE_NOT_FOUND 404
 #define BINK_HAXE_CAN_CONTINUE 302
 #define BINK_HAXE_CHOICE_FOUND 200
+#define BINK_HAXE_PARTIAL_CHOICE 206
 #define BINK_HAXE_UNKNOWN 321
 #define BINK_HAXE_FAILURE 417
 #define BINK_HAXE_TEAPOT 418
@@ -194,13 +195,14 @@ char* cplusplus_example_only_secondary_loop(BINK_Story *story, char *err_msg){
 #define BINK_HAXE_NOT_FOUND 404
 #define BINK_HAXE_CAN_CONTINUE 302
 #define BINK_HAXE_CHOICE_FOUND 200
+#define BINK_HAXE_PARTIAL_CHOICE 206
 #define BINK_HAXE_UNKNOWN 321
 #define BINK_HAXE_FAILURE 417
 #define BINK_HAXE_TEAPOT 418
 #define BINK_HAXE_END 204
 */
 
-int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_step ){
+int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_step, int index){
     //system("clear");
     bool can_continue = helper_can_continue(&story, err_msg);
 
@@ -219,11 +221,11 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
             return BINK_HAXE_CAN_CONTINUE;
         }
         else{
-            return BINK_HAXE_CHOICE_FOUND;
+            return BINK_HAXE_PARTIAL_CHOICE;
         }
     }
     
-    if (do_step == BINK_HAXE_CHOICE_FOUND) {
+    if (do_step == BINK_HAXE_PARTIAL_CHOICE) {
         bool end = false;
         // Obtain and print choices
         size_t len = helper_story_get_choices_length(story);
@@ -245,11 +247,21 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
 int main(void) {
     char *err_msg = NULL;
     BINK_Story *story = helper_create_story("./test.ink.json", err_msg);
-    int return_code = cplusplus_example_only_main_loop(story, err_msg, BINK_HAXE_CHOICE_FOUND);
-
+    int choice_index = 0;
+    int return_code = cplusplus_example_only_main_loop(story, err_msg, BINK_HAXE_TEAPOT, choice_index);
+    
     // Test. This while loop will be fully handled on the haxe side when I'm done.
     while(return_code != BINK_HAXE_END && return_code != BINK_HAXE_FAILURE && return_code != BINK_HAXE_UNKNOWN){
-        return_code = cplusplus_example_only_main_loop(story, err_msg, return_code);
+        if(return_code == BINK_HAXE_PARTIAL_CHOICE){
+            printf("iterating choice %d to check %d\n", choice_index, choice_index+1);
+            choice_index++;
+        }
+        else if(return_code==BINK_HAXE_CHOICE_FOUND){
+            printf("resetting choice %d to zero\n", choice_index);
+            choice_index = 0;
+        }
+        return_code = cplusplus_example_only_main_loop(story, err_msg, return_code, choice_index);
+        
     }
     
     printf("\nStories ended ok.\n");
