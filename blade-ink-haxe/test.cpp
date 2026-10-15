@@ -181,10 +181,10 @@ int main(void) {
             printf("\n");
             int newChoice = -1;
             while(newChoice > len || newChoice < 1){
-                char line[256]; //Reminder: input length must be enforced on haxe side
+                char inputLine[256]; //Reminder: input length must be enforced on haxe side
                 printf("Input> ");
-                if (fgets(line, sizeof(line), stdin)) {
-                    if (1 == sscanf(line, " %d", &newChoice)) {
+                if (fgets(inputLine, sizeof(inputLine), stdin)) {
+                    if (1 == sscanf(inputLine, " %d", &newChoice)) {
                         printf(" < input received: %d\n\n", newChoice);
                     }
                 }
