@@ -38,20 +38,6 @@ void check_ret(int ret, BINK_Story *story, char *err_msg) {
     }
 }
 
-void print_choices(BINK_Choices *choices, size_t len) {
-    for (size_t i=0; i < len; i++) {
-        char *text = NULL;
-        char *err_msg = NULL;
-        int ret = bink_choices_get_text(choices, i, &text, &err_msg);
-        if (ret != BINK_OK) {
-            finish(EXIT_FAILURE, NULL, err_msg);
-        }
-
-        printf("%lu. %s\n", i+1, text);
-        bink_cstring_free(text);
-    }
-}
-
 char* read_json_file(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (!file) {
@@ -134,6 +120,37 @@ void helper_story_continue_free(char * line){
     bink_cstring_free(line);
 }
 
+size_t helper_story_get_choices_length(BINK_Story *story) {
+    BINK_Choices *choices = NULL;
+    uint32_t ret = BINK_OK;
+    char *err_msg = NULL;
+    size_t len = 0;
+
+    ret = bink_story_get_current_choices(story, &choices, &len, &err_msg);
+    check_ret(ret, story, err_msg);
+
+    for (size_t i=0; i < len; i++) {
+        char *text = NULL;
+        char *err_msg = NULL;
+        int ret = bink_choices_get_text(choices, i, &text, &err_msg);
+        if (ret != BINK_OK) {
+            finish(EXIT_FAILURE, NULL, err_msg);
+            return i; // index+1 of last valid choice
+        }
+
+        //TODO: deconstruct for loop and get the values of text to haxe somehow 
+        printf("%lu. %s\n", i+1, text);
+        bink_cstring_free(text);
+    }
+    
+    bink_choices_free(choices);
+    return len; //len is the only value still important to main loop after printing
+}
+
+//void helper_story_handle_choices(char * line){
+//    BINK_Choices *choices = NULL;
+//}
+
 int main(void) {
     uint32_t ret = BINK_OK;
     BINK_Story *story = NULL;
@@ -157,18 +174,14 @@ int main(void) {
         }
 
         // Obtain and print choices
-        size_t len = 0;
-        ret = bink_story_get_current_choices(story, &choices, &len, &err_msg);
-        check_ret(ret, story, err_msg);
-        //printf("Num. choices: %lu\n", len);
+        size_t len = helper_story_get_choices_length(story);
+        end = len == 0;
 
-        if (len !=0) {
-            print_choices(choices, len);
+        if (!end) {
             printf("\n");
-            bink_choices_free(choices);
             int newChoice = -1;
             while(newChoice > len || newChoice < 1){
-                char line[256];
+                char line[256]; //Reminder: input length must be enforced on haxe side
                 printf("Input> ");
                 if (fgets(line, sizeof(line), stdin)) {
                     if (1 == sscanf(line, " %d", &newChoice)) {
@@ -178,8 +191,6 @@ int main(void) {
             }
             ret = bink_story_choose_choice_index(story, newChoice-1, &err_msg);
             check_ret(ret, story, err_msg);
-        } else {
-            end = true;
         }
     }
 
