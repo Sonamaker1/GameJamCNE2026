@@ -21,9 +21,28 @@
 #define BINK_HAXE_TEAPOT 418
 #define BINK_HAXE_END 204
 
+extern "C" {
+    value sum(value a, value b)
+    {
 
+        if( !val_is_int(a) || !val_is_int(b) ) return val_null;
+        return alloc_int(val_int(a) + val_int(b));
+    }
 
+    value getStringTest(value a)
+    {
+        if( !val_is_buffer(a) ) return val_null;
+        return a;
+    }
 
+    void doStuff()
+    {
+        int ret = main();
+    }
+}
+DEFINE_PRIM( sum, 2 );
+DEFINE_PRIM( getStringTest, 1 );
+DEFINE_PRIM( doStuff, 0 );
 
 void finish(int rc, BINK_Story *story, char *err_msg) {
     bink_cstring_free(err_msg);
@@ -280,24 +299,3 @@ int main(void) {
     return 0;
 }
 
-extern "C" {
-    value sum(value a, value b)
-    {
-
-        if( !val_is_int(a) || !val_is_int(b) ) return val_null;
-        return alloc_int(val_int(a) + val_int(b));
-    }
-
-    value getStringTest(value a)
-    {
-        if( !val_is_buffer(a) ) return val_null;
-        return a;
-    }
-
-    void doStuff()
-    {
-        int ret = main();
-    }
-}
-DEFINE_PRIM( sum, 2 );
-DEFINE_PRIM( getStringTest, 1 );
