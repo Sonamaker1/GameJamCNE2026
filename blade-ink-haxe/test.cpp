@@ -12,6 +12,8 @@
 #include <string.h>
 #include <bink.h>
 
+#include <test.h>
+
 #define BINK_HAXE_NOT_FOUND 404
 #define BINK_HAXE_CAN_CONTINUE 302
 #define BINK_HAXE_CHOICE_FOUND 200
@@ -35,14 +37,14 @@ extern "C" {
         return a;
     }
 
-    void doStuff()
+    void doThings()
     {
-        int ret = main();
+        int ret = doStuff();
     }
 }
 DEFINE_PRIM( sum, 2 );
 DEFINE_PRIM( getStringTest, 1 );
-DEFINE_PRIM( doStuff, 0 );
+DEFINE_PRIM( doThings, 0 );
 
 void finish(int rc, BINK_Story *story, char *err_msg) {
     bink_cstring_free(err_msg);
@@ -274,7 +276,7 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
 }
 
 
-int main(void) {
+int doStuff() {
     char *err_msg = NULL;
     BINK_Story *story = helper_create_story("./test.ink.json", err_msg);
     int choice_index = -1;
@@ -299,3 +301,6 @@ int main(void) {
     return 0;
 }
 
+int main(void){
+    return doStuff();
+}
