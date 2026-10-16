@@ -20,7 +20,7 @@ else
 endif
 
 TEST_SRC  ?= test.cpp
-TEST_BIN  ?= bink.ndll
+TEST_BIN  ?= ../bin/bink.ndll
 INCLUDE_DIR ?= include
 
 .PHONY: all run clean

@@ -1,0 +1,4 @@
+-cp . 
+-D HXCPP_M64
+-main Main 
+-cpp ../bin 
