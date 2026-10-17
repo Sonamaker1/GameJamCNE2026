@@ -9,9 +9,10 @@
 
 #include <hx/CFFI.h>
 #include "Utils.h"
-
+#include <bink.h>
 
 using namespace sampleextension;
+
 
 #define BINK_HAXE_NOT_FOUND 404
 #define BINK_HAXE_CAN_CONTINUE 302
