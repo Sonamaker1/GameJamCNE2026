@@ -8,9 +8,10 @@ function create(){
 
 function postCreate()
 {
-    var doStuff = NdllUtil.getFunction("bink", "doStuff", 0);
     
-    doStuff();
+    var doStuff = NdllUtil.getFunction("test", "sum", 2);
+    
+    trace(doStuff(1,2));
 }
 /**
  * TODO:
