@@ -11,8 +11,10 @@
 #include <stdarg.h>
 #include <string.h>
 #include <bink.h>
-
+#include <cwalk.h>
 #include <test.h>
+#include <filesystem>
+#include <iostream>
 
 #define BINK_HAXE_NOT_FOUND 404
 #define BINK_HAXE_CAN_CONTINUE 302
@@ -49,7 +51,8 @@ DEFINE_PRIM( doThings, 0 );
 void finish(int rc, BINK_Story *story, char *err_msg) {
     bink_cstring_free(err_msg);
     bink_story_free(story);
-    exit(rc);
+    //do not close the host process this time, but do cleanup
+    //exit(rc);
 }
 
 void check_ret(int ret, BINK_Story *story, char *err_msg) {
@@ -278,7 +281,11 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
 
 int doStuff() {
     char *err_msg = NULL;
-    BINK_Story *story = helper_create_story("./test.ink.json", err_msg);
+
+	printf("Starting path is: ");
+    std::cout << std::filesystem::current_path();
+    printf("\n");
+    BINK_Story *story = helper_create_story("./mods/BinkTest/stories/test.ink.json", err_msg);
     int choice_index = -1;
     int return_code = cplusplus_example_only_main_loop(story, err_msg, BINK_HAXE_TEAPOT, choice_index);
     
