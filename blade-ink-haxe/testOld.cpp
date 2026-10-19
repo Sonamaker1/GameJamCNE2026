@@ -1,5 +1,6 @@
 #define IMPLEMENT_API
 #include <hx/CFFI.h>
+#include <hx/CFFIPrime.h>
 
 
 #include <stddef.h>
@@ -25,6 +26,16 @@
 #define BINK_HAXE_TEAPOT 418
 #define BINK_HAXE_END 204
 
+static char *cur_err_msg;
+static char *cur_global_buffer;
+static int cur_step_code = 0;
+static int cur_choice_index = 0;
+static int next_choice = -1;
+static BINK_Story *cur_global_story;
+
+int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_step, int index);
+void haxe_init_story(const char* filename, char *err_msg);
+
 extern "C" {
     value sum(value a, value b)
     {
@@ -39,6 +50,74 @@ extern "C" {
         return a;
     }
 
+    HxString stringVal(HxString inString)
+    {
+        printf("String : %s (%d)\n", inString.c_str(), inString.size());
+        return HxString("Ok");
+    }
+
+    HxString getCurrentBuffer()
+    {
+        return HxString(cur_global_buffer);
+    }
+
+    value getCurrentStep()
+    {
+        return alloc_int(cur_step_code);
+    }
+
+
+    void setNextChoice(value a)
+    {
+        next_choice =  val_int(a);
+    }
+
+    value getChoiceIndex()
+    {
+        return alloc_int(cur_choice_index);
+    }
+
+    HxString getCurrentError()
+    {
+        if(cur_err_msg != NULL){
+            return HxString(cur_err_msg);
+        }
+        return HxString("no errors");
+    }
+
+    bool globalHasError()
+    {
+        if(cur_err_msg != NULL){
+            return true;
+        }
+        return false;
+    }
+
+    HxString initGlobalStory(HxString inString){
+        haxe_init_story(inString.c_str(), cur_err_msg);
+        return HxString("Ok");
+    }
+
+    int globalStorySingleStep(){
+        if(cur_global_story!=NULL){
+            if(cur_step_code == BINK_HAXE_PARTIAL_CHOICE){
+                //printf("iterating choice %d to check %d\n", choice_index, choice_index+1);
+                cur_choice_index++;
+            }
+            else if(cur_step_code == BINK_HAXE_CHOICE_FOUND){
+                //printf("resetting choice %d\n", choice_index);
+                cur_choice_index = -1;
+            }
+
+            cur_step_code = cplusplus_example_only_main_loop(cur_global_story, cur_err_msg, cur_step_code, cur_choice_index);
+        }
+        else{
+            cur_step_code = BINK_HAXE_UNKNOWN;
+        }
+
+        return cur_step_code;
+    }
+
     void doThings()
     {
         int ret = doStuff();
@@ -47,6 +126,16 @@ extern "C" {
 DEFINE_PRIM( sum, 2 );
 DEFINE_PRIM( getStringTest, 1 );
 DEFINE_PRIM( doThings, 0 );
+DEFINE_PRIM( setNextChoice, 1 );
+DEFINE_PRIME1(stringVal);
+
+DEFINE_PRIME0(getCurrentBuffer);
+DEFINE_PRIME0(getCurrentError);
+DEFINE_PRIME0(globalHasError);
+
+DEFINE_PRIME0(globalStorySingleStep);
+DEFINE_PRIME0(getCurrentStep);
+DEFINE_PRIME1(initGlobalStory);
 
 void finish(int rc, BINK_Story *story, char *err_msg) {
     bink_cstring_free(err_msg);
@@ -124,6 +213,7 @@ void init_story(BINK_Story **story, const char* filename, char *err_msg){
     free(json_string);
 }
 
+
 bool helper_can_continue(BINK_Story **story, char *err_msg){
     bool can_continue;
     uint32_t ret = BINK_OK;
@@ -164,6 +254,16 @@ BINK_Story * helper_create_story(const char* filename, char *err_msg){
     return story;
 }
 
+void haxe_init_story(const char* filename, char *err_msg){
+    if(cur_global_story != NULL){
+        //Fail the currently running story to free memory.
+        finish(EXIT_FAILURE, cur_global_story, err_msg);
+        cur_global_story = NULL; 
+    }
+    init_story(&cur_global_story, filename, err_msg);
+}
+
+
 int cplusplus_example_only_input_prompter(int len){
     int newChoice = -1;
     while(newChoice > len || newChoice < 1){
@@ -178,7 +278,7 @@ int cplusplus_example_only_input_prompter(int len){
     return newChoice;
 }
 
-// Copy into the global string buffer (up to 2000 characters at a time)
+// set the global string buffer pointer
 void set_last_text(char*){
     
 } 
@@ -213,13 +313,20 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
 
     if (do_step == BINK_HAXE_CAN_CONTINUE || can_continue) {
         char *line = NULL;
+
+        if(cur_global_buffer != NULL){
+            helper_story_continue_free(cur_global_buffer); 
+            cur_global_buffer = NULL;
+        }
     
         line = cplusplus_example_only_secondary_loop(story, err_msg);
         
         int len_line = strlen(line);
         printf("%.*s\n", len_line-1, line);
-        helper_story_continue_free(line);
 
+        // We'll need to hold onto this until the next step ends
+        cur_global_buffer = line;
+        
         can_continue = helper_can_continue(&story, err_msg);    
         
         if(can_continue){
@@ -267,8 +374,14 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
 
         if (!end) {
             printf("\n");
-            int newChoice = cplusplus_example_only_input_prompter(len);
-            helper_story_make_choice(&story, newChoice-1, err_msg);
+            if(next_choice < 0){
+                int newChoice = cplusplus_example_only_input_prompter(len);
+                helper_story_make_choice(&story, newChoice-1, err_msg);
+            }
+            else{
+                helper_story_make_choice(&story, next_choice, err_msg);
+                next_choice = -1;
+            }
             return BINK_HAXE_CHOICE_FOUND;
         }
 
