@@ -39,6 +39,7 @@ var initGlobalStory         = NdllUtil.getFunction("test", "initGlobalStory", 1)
 var setNextChoiceIndex      = NdllUtil.getFunction("test", "setNextChoice", 1);
 
 var getCurrentBuffer        = NdllUtil.getFunction("test", "getCurrentBuffer", 0);    
+var clearCurrentBuffer      = NdllUtil.getFunction("test", "clearCurrentBuffer", 0);    
 var getCurrentError         = NdllUtil.getFunction("test", "getCurrentError", 0);    
 var globalHasError          = NdllUtil.getFunction("test", "globalHasError", 0);    
     
@@ -59,6 +60,8 @@ function postCreate()
             getInt = getCurrentStep();
             buffer = getCurrentBuffer();
             trace("Stepped: " + getInt + "; Lines: "+ buffer);
+            clearCurrentBuffer(); 
+            
         }
     }
     
