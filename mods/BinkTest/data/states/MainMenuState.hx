@@ -43,6 +43,10 @@ var clearCurrentBuffer      = NdllUtil.getFunction("test", "clearCurrentBuffer",
 var getCurrentError         = NdllUtil.getFunction("test", "getCurrentError", 0);    
 var globalHasError          = NdllUtil.getFunction("test", "globalHasError", 0);    
     
+function lazyReadInk(filename:String){
+    trace(filename);
+}
+
 
 function postCreate()
 {
@@ -50,7 +54,7 @@ function postCreate()
     //var doStuff = NdllUtil.getFunction("test", "sum", 2);
     //var getTeapotIfNumber = NdllUtil.getFunction("test", "teapot", 1);    
     //var iterate = NdllUtil.getFunction("test", "iterate", 2);    
-    initGlobalStory("./mods/BinkTest/stories/test.ink.json");
+    initGlobalStory("./mods/BinkTest/stories/MainMenuTest.json");
     var error = getCurrentError();
     if( error == "no errors"){
         var getInt = 99;

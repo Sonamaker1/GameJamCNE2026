@@ -347,10 +347,15 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
             bink_cstring_free(cur_global_buffer); 
             cur_global_buffer = NULL;
         }
+        cur_choice_index = -2; //Workaround for logic error that skips choices
         return BINK_HAXE_PARTIAL_CHOICE;
     }
     
     if (do_step == BINK_HAXE_PARTIAL_CHOICE) {
+
+        if(cur_choice_index < 0){
+            cur_choice_index = 0; //Sometimes it skips???
+        }
         bool end = false;
         
         // kinda inefficient to keep allocating a choices object but idk what else to do  
@@ -364,7 +369,8 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
         ret = bink_story_get_current_choices(story, &choices, &len, &err_msg);
         check_ret(ret, story, err_msg);
 
-        if (index < len){
+        //printf("Expected: { %lu. } %s\n", cur_choice_index+1, cur_global_buffer);
+        if (cur_choice_index < len){
             //char *text = NULL;
 
             if(cur_global_buffer != NULL){
@@ -373,14 +379,13 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
             }
             
             char *err_msg = NULL;
-            int ret = bink_choices_get_text(choices, index, &cur_global_buffer, &err_msg);
+            int ret = bink_choices_get_text(choices, cur_choice_index, &cur_global_buffer, &err_msg);
             if (ret != BINK_OK) {
                 finish(EXIT_FAILURE, NULL, err_msg);
-                len = index; // index+1 of last valid choice
+                len = cur_choice_index; // index+1 of last valid choice
             }
 
-            //TODO: deconstruct for loop and get the values of text to haxe somehow 
-            // printf("[ %lu. ] %s\n", index+1, cur_global_buffer);
+            //printf("[ %lu. ] %s\n", cur_choice_index+1, cur_global_buffer);
             //bink_cstring_free(text); 
             //cur_global_buffer = text;
             bink_choices_free(choices);
