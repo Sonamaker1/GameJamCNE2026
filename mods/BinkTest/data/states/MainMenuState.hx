@@ -42,7 +42,7 @@ var getCurrentBuffer        = NdllUtil.getFunction("test", "getCurrentBuffer", 0
 var clearCurrentBuffer      = NdllUtil.getFunction("test", "clearCurrentBuffer", 0);    
 var getCurrentError         = NdllUtil.getFunction("test", "getCurrentError", 0);    
 var globalHasError          = NdllUtil.getFunction("test", "globalHasError", 0);    
-var setNextChoice          = NdllUtil.getFunction("test", "setNextChoice", 0);    
+var setNextChoice          = NdllUtil.getFunction("test", "setNextChoice", 1);    
     
 function lazyReadInk(filename:String){
     trace(filename);
@@ -54,8 +54,8 @@ function doOneStep(){
         var getInt = 99;
 		var buffer = "";
 		if(getInt!= null && getInt!=0 && getInt!=BINK_HAXE_END && getInt!=BINK_HAXE_FAILURE && getInt!=BINK_HAXE_UNKNOWN){
-			globalStorySingleStep();
 			setNextChoice(0);
+			globalStorySingleStep();
 			getInt = getCurrentStep();
 			buffer = getCurrentBuffer();
 			trace("Stepped: " + getInt + "; Lines: "+ buffer);
@@ -69,14 +69,14 @@ function postCreate()
     //var doStuff = NdllUtil.getFunction("test", "sum", 2);
     //var getTeapotIfNumber = NdllUtil.getFunction("test", "teapot", 1);    
     //var iterate = NdllUtil.getFunction("test", "iterate", 2);    
-    initGlobalStory("./mods/BinkTest/stories/MainMenuTest.json");
+    initGlobalStory("./mods/BinkTest/stories/test.ink.json");
 
     doOneStep();
 	//doThings("print this out");
 	
 }
 
-function onUpdate(){
+function update(){
 	if (FlxG.keys.justPressed.A) {
 		doOneStep();
 	}
