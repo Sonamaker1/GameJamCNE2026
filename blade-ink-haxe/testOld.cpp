@@ -399,8 +399,9 @@ int cplusplus_example_only_main_loop(BINK_Story *story, char *err_msg, int do_st
         if (!end) {
             printf("\n");
             if(next_choice < 0){
-                int newChoice = cplusplus_example_only_input_prompter(len);
-                helper_story_make_choice(&story, newChoice-1, err_msg);
+				return BINK_HAXE_PARTIAL_CHOICE;
+                //int newChoice = cplusplus_example_only_input_prompter(len);
+                //helper_story_make_choice(&story, newChoice-1, err_msg);
             }
             else{
                 helper_story_make_choice(&story, next_choice, err_msg);

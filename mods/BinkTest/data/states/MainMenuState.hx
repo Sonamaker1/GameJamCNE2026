@@ -42,12 +42,27 @@ var getCurrentBuffer        = NdllUtil.getFunction("test", "getCurrentBuffer", 0
 var clearCurrentBuffer      = NdllUtil.getFunction("test", "clearCurrentBuffer", 0);    
 var getCurrentError         = NdllUtil.getFunction("test", "getCurrentError", 0);    
 var globalHasError          = NdllUtil.getFunction("test", "globalHasError", 0);    
+var setNextChoice          = NdllUtil.getFunction("test", "setNextChoice", 0);    
     
 function lazyReadInk(filename:String){
     trace(filename);
 }
 
-
+function doOneStep(){
+	var error = getCurrentError();
+    if( error == "no errors"){
+        var getInt = 99;
+		var buffer = "";
+		if(getInt!= null && getInt!=0 && getInt!=BINK_HAXE_END && getInt!=BINK_HAXE_FAILURE && getInt!=BINK_HAXE_UNKNOWN){
+			globalStorySingleStep();
+			setNextChoice(0);
+			getInt = getCurrentStep();
+			buffer = getCurrentBuffer();
+			trace("Stepped: " + getInt + "; Lines: "+ buffer);
+			clearCurrentBuffer();		
+		}
+    }
+}
 function postCreate()
 {
     
@@ -55,23 +70,18 @@ function postCreate()
     //var getTeapotIfNumber = NdllUtil.getFunction("test", "teapot", 1);    
     //var iterate = NdllUtil.getFunction("test", "iterate", 2);    
     initGlobalStory("./mods/BinkTest/stories/MainMenuTest.json");
-    var error = getCurrentError();
-    if( error == "no errors"){
-        var getInt = 99;
-        var buffer = "";
-        while(getInt!= null && getInt!=0 && getInt!=BINK_HAXE_END && getInt!=BINK_HAXE_FAILURE && getInt!=BINK_HAXE_UNKNOWN){
-            globalStorySingleStep();
-            getInt = getCurrentStep();
-            buffer = getCurrentBuffer();
-            trace("Stepped: " + getInt + "; Lines: "+ buffer);
-            clearCurrentBuffer(); 
-            
-        }
-    }
-    
+
+    doOneStep();
 	//doThings("print this out");
 	
 }
+
+function onUpdate(){
+	if (FlxG.keys.justPressed.A) {
+		doOneStep();
+	}
+}
+
 /**
  * TODO:
  * add language selector
