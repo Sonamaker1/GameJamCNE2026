@@ -1,8 +1,9 @@
 import funkin.backend.MusicBeatState;
 import funkin.backend.utils.NdllUtil;
+import funkin.menus.TitleState;
 
 function create(){
-
+	//MusicBeatState.skipTransIn = MusicBeatState.skipTransOut = true;
 }
 
 var BINK_HAXE_NOT_FOUND:Int = 404;
@@ -63,22 +64,25 @@ function doOneStep(){
 		}
     }
 }
+
 function postCreate()
 {
+	
     
     //var doStuff = NdllUtil.getFunction("test", "sum", 2);
     //var getTeapotIfNumber = NdllUtil.getFunction("test", "teapot", 1);    
     //var iterate = NdllUtil.getFunction("test", "iterate", 2);    
-    initGlobalStory("./mods/BinkTest/stories/test.ink.json");
+    //initGlobalStory("./mods/BinkTest/stories/test.ink.json");
 
-    doOneStep();
+    //doOneStep();
 	//doThings("print this out");
 	
 }
 
 function update(){
-	if (FlxG.keys.justPressed.A) {
-		doOneStep();
+	if (FlxG.keys.justPressed.B) {
+		//doOneStep();
+		FlxG.switchState(new ModState("BinkStoryState"));
 	}
 }
 
