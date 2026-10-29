@@ -53,7 +53,14 @@ function changeLine(index:Int, lineInput:String){
     }
 }
 
+function blankLines(){
+    for (index in 0...lines.length){
+        lines[index].text = "";
+    }
+}
+
 var iterate = 0;
+var lastStepCode =0;
 function doOneStep(){
     var error = getCurrentError();
     if( error == "no errors"){
@@ -64,7 +71,16 @@ function doOneStep(){
 			globalStorySingleStep();
 			getInt = getCurrentStep();
 			buffer = getCurrentBuffer();
-			changeLine(iterate%lines.length, (getInt == 206?"        Choose>":"$")+ buffer);
+			if(buffer != null){
+                iterate++;
+
+                if(lastStepCode == 206 && getInt == 302){
+                    blankLines();
+                    iterate = 0;
+                }
+                changeLine(iterate%lines.length, (getInt == 206?"        Choose>":getInt+"$ ")+ buffer);
+                lastStepCode = getInt;
+			}
 			//trace("Stepped: " + getInt + "; Lines: "+ buffer);
 			clearCurrentBuffer();
 		}
@@ -81,6 +97,5 @@ function update(elapsed:Float) {
 
     if (FlxG.keys.justPressed.B) {
         doOneStep();
-        iterate++;
 	}
 }
