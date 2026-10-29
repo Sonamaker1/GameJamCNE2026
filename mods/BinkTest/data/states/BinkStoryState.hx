@@ -38,7 +38,7 @@ var lineSpacing = 30;
 
 var lines:Array<FlxText> = [];
 var boxes:Array<FlxSprite> = [];
-var choices:Array<FlxSprite> = [];
+var choices:Array<Int> = [];
 var mainHint = new FlxText(FlxG.width/6,30,0, "Press number keys to advance story", 30);
 FlxG.state.add(mainHint);
 
@@ -62,20 +62,15 @@ function addLine(lineInput:String){
     newLine.x = FlxG.width/6;
     newLine.y+= (lineHeight+lineSpacing) * positioning -  (lineHeight+lineSpacing)*5;
 
-    choices = -1;
+    choice_set = 0;
 
     positioning++;
 }
 
-function setChoiceBox(index:Int, choiceInput:Int){
-    if( index < lines.length){
-        boxes[index] = lineInput;
-    }
-}
-
-function changeLine(index:Int, lineInput:String){
+function changeLine(index:Int, lineInput:String, choiceInput:Int){
     if( index < lines.length){
         lines[index].text = lineInput;
+        choices[index] = choiceInput;
     }
 }
 
@@ -83,7 +78,8 @@ function blankLines(){
     for (index in 0...lines.length){
         lines[index].text = "";
         lines[index].color = 0xFFFFFFFF;
-        boxes[index] = -1;
+        boxes[index].color = 0xFF000000;
+        choices[index] = 0;
     }
 }
 
@@ -116,14 +112,21 @@ function doOneStep(){
                     choice_set = 0; //Begin next frame
                 }
 
-                changeLine(iterate%lines.length, (getInt == BINK_HAXE_PARTIAL_CHOICE?'        [${partial_number}]>  ':"$  ")+ buffer);
-                setChoiceBox(iterate%lines.length, (getInt == BINK_HAXE_PARTIAL_CHOICE?partial_number:0) );
+                changeLine(
+                    iterate%lines.length,
+                    (getInt == BINK_HAXE_PARTIAL_CHOICE?'        [${partial_number}]>  ':"$  ")+ buffer,
+                    (getInt == BINK_HAXE_PARTIAL_CHOICE?partial_number:0)
+                );
                 lines[iterate%lines.length].color = getInt == BINK_HAXE_PARTIAL_CHOICE?0xFFDDDD00:0xFFFFFFFF;
                 lastStepCode = getInt;
 			}
 			else if(lastStepCode!=BINK_HAXE_END && getInt == BINK_HAXE_END){
                 iterate++;
-                changeLine(iterate%lines.length, "STORY HAS ENDED! Press R to Restart!");
+                changeLine(
+                    iterate%lines.length,
+                    "STORY HAS ENDED! Press R to Restart!",
+                    0
+                );
                 lines[iterate%lines.length].color = 0xFFFFAA33;
                 lastStepCode = getInt;
 			}
@@ -152,6 +155,20 @@ function update(elapsed:Float) {
         choice_set = 2;
 	}
 
+    for (index in 0...boxes.length){
+        if( (FlxG.mouse.y < boxes[index].y + lineHeight*2.7/2) && (FlxG.mouse.y > boxes[index].y - lineHeight*2.7/2) ){
+            boxes[index].color = 0xFF662233;
+            if(FlxG.mouse.justPressed){
+                boxes[index].color = 0xFF883344;
+                choice_set = choices[index];
+                setNextChoice(choices[index]);
+            }
+        }
+        else{
+            boxes[index].color = 0xFF000000;
+        }
+    }
+
     if (FlxG.keys.justPressed.B || choice_set >= 0) {
         buffer = "";
         while((buffer!=null || recordCode == BINK_HAXE_CHOICE_FOUND || recordCode == BINK_HAXE_CHOICE_MADE) && lastStepCode != BINK_HAXE_END){
@@ -174,17 +191,8 @@ function update(elapsed:Float) {
         partial_number_max = 0;
         choice_set = 0;
         lastStepCode = BINK_HAXE_INIT;
-	}
-
-    for (index in 0...boxes.length){
-        //mainHint.text = index;
-        if(FlxG.mouse.y < boxes[index].y ){
-            boxes[index].color = 0xFF662233;
-            //mainHint.text = index;
-        }
-        else{
-            boxes[index].color = 0xFF000000;
-        }
     }
+
+
 
 }
