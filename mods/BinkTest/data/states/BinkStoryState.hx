@@ -23,25 +23,26 @@ function postCreate() {
 
     initGlobalStory("./mods/BinkTest/stories/test.ink.json");
 
-    for (i in 0...15){
-        addLine("line "+i);
+    for (i in 0...12){
+        addLine("line #"+(i+1));
     }
 }
 
 var positioning =  0;
-var lineHeight  = 30;
-var lineSpacing = 10;
+var lineHeight  = 15;
+var lineSpacing = 30;
 
 var lines:Array<FlxText> = [];
+FlxG.state.add(new FlxText(FlxG.width/2,30,0, "Press B to advance story.", 30));
 
 
 function addLine(lineInput:String){
-    var newLine = new FlxText(20,20,0,lineInput, 30);
+    var newLine = new FlxText(20,20,FlxG.width*2/3,lineInput, lineHeight);
     lines.push(newLine);
     FlxG.state.add(newLine);
     newLine.screenCenter();
     newLine.x = FlxG.width/6;
-    newLine.y+= (lineHeight+lineSpacing) * positioning -  (lineHeight+lineSpacing)*8;
+    newLine.y+= (lineHeight+lineSpacing) * positioning -  (lineHeight+lineSpacing)*5;
     positioning++;
 }
 
@@ -63,7 +64,7 @@ function doOneStep(){
 			globalStorySingleStep();
 			getInt = getCurrentStep();
 			buffer = getCurrentBuffer();
-			changeLine(iterate%lines.length, (getInt == 206?"CHOICE: >":"        $")+ buffer);
+			changeLine(iterate%lines.length, (getInt == 206?"        Choose>":"$")+ buffer);
 			//trace("Stepped: " + getInt + "; Lines: "+ buffer);
 			clearCurrentBuffer();
 		}
