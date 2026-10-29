@@ -1,4 +1,8 @@
-Lets talk it out.
+> Between you and the dimensional rift, Maud sits before you.
+> Beyond the gate lies your home -- or whatever is left of it.
+> ... Lets talk it out, I guess.
+> Adjusting to the roaring noises of the barrier you barely catch word of a question:
+> The mechanism, Maud, uttered a phrase coldly as ever to you: "Was it all worth it to get here?"
  * [I had no choice.] -> denial
  * [I made the best choices I had.] -> accept
 
@@ -39,7 +43,7 @@ Lets talk it out.
     -> END
     
  * (speechready) ->
-    - We shall begin your final challenge then.
+    - MAUD: We shall begin your final challenge then.
     -> END
 
 
