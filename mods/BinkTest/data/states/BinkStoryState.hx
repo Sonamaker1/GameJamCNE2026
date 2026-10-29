@@ -39,7 +39,7 @@ var lineSpacing = 30;
 var lines:Array<FlxText> = [];
 var boxes:Array<FlxSprite> = [];
 var choices:Array<Int> = [];
-var mainHint = new FlxText(FlxG.width/6,30,0, "Press number keys to advance story", 30);
+var mainHint = new FlxText(FlxG.width/6,30,0, "Press number keys to advance story (or click boxes)", 30);
 FlxG.state.add(mainHint);
 
 
@@ -125,7 +125,7 @@ function doOneStep(){
                 changeLine(
                     iterate%lines.length,
                     "STORY HAS ENDED! Press R to Restart!",
-                    0
+                    321
                 );
                 lines[iterate%lines.length].color = 0xFFFFAA33;
                 lastStepCode = getInt;
@@ -169,7 +169,7 @@ function update(elapsed:Float) {
         }
     }
 
-    if (FlxG.keys.justPressed.B || choice_set >= 0) {
+    if (choice_set!=321 && (FlxG.keys.justPressed.B || choice_set >= 0)) {
         buffer = "";
         while((buffer!=null || recordCode == BINK_HAXE_CHOICE_FOUND || recordCode == BINK_HAXE_CHOICE_MADE) && lastStepCode != BINK_HAXE_END){
             doOneStep();
@@ -183,7 +183,7 @@ function update(elapsed:Float) {
 	}
 
 
-    if (FlxG.keys.justPressed.R) {
+    if (FlxG.keys.justPressed.R || choice_set == 321) {
         initGlobalStory("./mods/BinkTest/stories/test.ink.json");
         blankLines();
         iterate = 0;
