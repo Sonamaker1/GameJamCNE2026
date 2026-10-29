@@ -1,10 +1,8 @@
 import funkin.backend.MusicBeatState;
-import funkin.backend.utils.NdllUtil;
+//import funkin.backend.utils.NdllUtil;
 import funkin.menus.TitleState;
 
-function create(){
-	//MusicBeatState.skipTransIn = MusicBeatState.skipTransOut = true;
-}
+
 
 var BINK_HAXE_NOT_FOUND:Int = 404;
 var BINK_HAXE_CAN_CONTINUE:Int = 302;
@@ -33,7 +31,7 @@ DEFINE_PRIM(globalStorySingleStep, 0);
 DEFINE_PRIME0(getCurrentStep);
 DEFINE_PRIME1(initGlobalStory);
 */
-
+/*
 var globalStorySingleStep   = NdllUtil.getFunction("test", "globalStorySingleStep", 0);    
 var getCurrentStep          = NdllUtil.getFunction("test", "getCurrentStep", 0);    
 var initGlobalStory         = NdllUtil.getFunction("test", "initGlobalStory", 1);    
@@ -44,11 +42,11 @@ var clearCurrentBuffer      = NdllUtil.getFunction("test", "clearCurrentBuffer",
 var getCurrentError         = NdllUtil.getFunction("test", "getCurrentError", 0);    
 var globalHasError          = NdllUtil.getFunction("test", "globalHasError", 0);    
 var setNextChoice          = NdllUtil.getFunction("test", "setNextChoice", 1);    
-    
+   */
 function lazyReadInk(filename:String){
     trace(filename);
 }
-
+/*
 function doOneStep(){
 	var error = getCurrentError();
     if( error == "no errors"){
@@ -64,6 +62,7 @@ function doOneStep(){
 		}
     }
 }
+*/
 
 function postCreate()
 {
