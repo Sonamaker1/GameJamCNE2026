@@ -22,9 +22,9 @@ function postCreate() {
     CoolUtil.playMusic(loop);
     FlxG.state.bgColor = 0xFF444444;
     //reset();
-    initGlobalStory("./mods/BinkTest/stories/QuickEnd.json"); //Not needed but a good stress test
+    initGlobalStory("./"+Paths.getAssetsRoot()+"/stories/QuickEnd.json"); //Not needed but a good stress test
 
-    initGlobalStory("./mods/BinkTest/stories/test.ink.json");
+    initGlobalStory("./"+Paths.getAssetsRoot()+"/stories/test.ink.json");
     setNextChoice(-1);
     for (i in 0...12){
         addLine("line #"+(i+1));
