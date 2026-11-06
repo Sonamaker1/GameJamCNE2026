@@ -38,10 +38,12 @@ var positioning =  0;
 var lineHeight  = 15;
 var lineSpacing = 30;
 
+var x =lineHeight+lineSpacing;
+
 var lines:Array<FlxText> = [];
-var positions:Array<Array<Int>> = [[],[],[],[],[],[],[-200,0],[200,lineHeight+lineSpacing],[],[]];
+var positions:Array<Array<Int>> = [[],[],[],[],[],[],[],[-200, x+50],[200,50],[0,-x-20],[0,20]];
 var sizes:Array<Array<Int>> = [
-    [],[],[],[],[],[],
+    [],[],[],[],[],[],[],
     [lineHeight*10,lineHeight*2],
     [lineHeight*10,lineHeight*2],
     [lineHeight*10,lineHeight*2],
@@ -68,7 +70,7 @@ function addLine(lineInput:String){
     }
 
     var newLine = new FlxText(20,20,size[0],lineInput, lineHeight);
-    newLine.setFormat(Paths.font("vcr.ttf"), lineHeight*1.5);
+    newLine.setFormat(Paths.font("UnitBlock.ttf"), lineHeight*1.5);
     lines.push(newLine);
     newLine.screenCenter();
     //newLine.offset.x = -FlxG.width/2;
@@ -158,7 +160,7 @@ function doOneStep(){
 			globalStorySingleStep();
 			getInt = getCurrentStep();
 			buffer = getCurrentBuffer();
-			if(buffer != null){
+			if(buffer != null && buffer.length>1){
                 iterate++;
                 if(getInt == BINK_HAXE_PARTIAL_CHOICE){
                     if(iterate%lines.length < lines.length-5){
@@ -178,7 +180,7 @@ function doOneStep(){
                 var tempIndex = iterate%lines.length;
                 changeLine(
                     tempIndex,
-                    (getInt == BINK_HAXE_PARTIAL_CHOICE?'<[ ${partial_number} ]>\n':"$  ")+ buffer,
+                    (getInt == BINK_HAXE_PARTIAL_CHOICE?'<[ ${partial_number} ]>\n':"")+ buffer,
                     (getInt == BINK_HAXE_PARTIAL_CHOICE?partial_number:0)
                 );
                 if(getInt == BINK_HAXE_PARTIAL_CHOICE){
