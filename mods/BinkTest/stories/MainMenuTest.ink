@@ -1,4 +1,0 @@
- * Story
- * Freeplay
- * Options
- * Credits
