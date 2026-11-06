@@ -1,4 +1,6 @@
 import funkin.backend.system.Controls;
+import flixel.addons.display.FlxSliceSprite;
+import flixel.math.FlxRect;
 import Type;
 
 var loop = Paths.music('locationBGM/LobbyLoop');
@@ -37,27 +39,20 @@ var lineHeight  = 15;
 var lineSpacing = 30;
 
 var lines:Array<FlxText> = [];
-var boxes:Array<FlxSprite> = [];
+var boxes:Array<FlxSliceSprite> = [];
 var choices:Array<Int> = [];
 var mainHint = new FlxText(FlxG.width/6,30,0, "Press number keys to advance story (or click boxes)", 30);
 FlxG.state.add(mainHint);
 
 
 function addLine(lineInput:String){
-    var bgText = new FlxSprite();
-    bgText.makeGraphic(1, 1, 0xFFFFFFFF);
-    bgText.color = 0xFF000000;
-    bgText.scale.set(FlxG.width*2/3, lineHeight*2.7);
-    bgText.screenCenter();
-    bgText.x = FlxG.width/6 + FlxG.width*2/6;
-    bgText.y+= 8+ (lineHeight+lineSpacing) * positioning -  (lineHeight+lineSpacing)*5;
-    boxes.push(bgText);
+    //new FlxSprite();
+    //bgText.makeGraphic(1, 1, 0xFFFFFFFF);
 
-    FlxG.state.add(bgText);
+    //bgText.scale.set(FlxG.width*2/3, lineHeight*2.7);
 
     var newLine = new FlxText(20,20,FlxG.width*2/3,lineInput, lineHeight);
     lines.push(newLine);
-    FlxG.state.add(newLine);
     newLine.screenCenter();
     newLine.x = FlxG.width/6;
     newLine.y+= (lineHeight+lineSpacing) * positioning -  (lineHeight+lineSpacing)*5;
@@ -65,6 +60,31 @@ function addLine(lineInput:String){
     choice_set = 0;
 
     positioning++;
+
+    var bgText = new FlxSliceSprite(Paths.image("BorderSlice.png"), new FlxRect(15, 15, 20, 20), FlxG.width*2/3, lineHeight*2.9);
+
+    bgText.stretchBottom = true;
+    bgText.stretchTop = true;
+    bgText.stretchLeft = true;
+    bgText.stretchRight = true;
+    bgText.stretchCenter = true;
+    bgText.updateHitbox();
+    bgText.offset.x = -FlxG.width/2;
+    bgText.x = -bgText.width/2;
+    bgText.y -= -bgText.height/2+4;
+
+    bgText.offset.y = lineHeight*2.9/2;
+    //bgText.screenCenter();
+    //bgText.x = FlxG.width; //FlxG.width/6 + FlxG.width*2/6;
+    bgText.y += FlxG.height/2;
+    bgText.y += -8+ (lineHeight+lineSpacing) * (positioning-1) -  (lineHeight+lineSpacing)*5;
+    //bgText.color = 0xFF333333;
+    //bgText.setColorTransform(0.2,0.2,0.2,0.2,0,0,0,0);
+
+    boxes.push(bgText);
+
+    FlxG.state.add(bgText);
+    FlxG.state.add(newLine);
 }
 
 function changeLine(index:Int, lineInput:String, choiceInput:Int){
@@ -78,8 +98,11 @@ function blankLines(){
     for (index in 0...lines.length){
         lines[index].text = "";
         lines[index].color = 0xFFFFFFFF;
-        boxes[index].color = 0xFF000000;
-        choices[index] = 0;
+        boxes[index].color = 0x00333333;
+        boxes[index].alpha = 0.0001;
+        choices[index] = -1;
+        //boxes[index].setColorTransform(0.2,0.2,0.2,0.2,0,0,0,0);
+
     }
 }
 
@@ -112,12 +135,19 @@ function doOneStep(){
                     choice_set = 0; //Begin next frame
                 }
 
+                var tempIndex = iterate%lines.length;
                 changeLine(
-                    iterate%lines.length,
+                    tempIndex,
                     (getInt == BINK_HAXE_PARTIAL_CHOICE?'        [${partial_number}]>  ':"$  ")+ buffer,
                     (getInt == BINK_HAXE_PARTIAL_CHOICE?partial_number:0)
                 );
-                lines[iterate%lines.length].color = getInt == BINK_HAXE_PARTIAL_CHOICE?0xFFDDDD00:0xFFFFFFFF;
+                if(getInt == BINK_HAXE_PARTIAL_CHOICE){
+                    lines[tempIndex].color = 0xFFDDDD00;
+                    boxes[tempIndex].color = 0xFF6699AA;
+                }
+                else{
+                    lines[tempIndex].color =  0xFFFFFFFF;
+                }
                 lastStepCode = getInt;
 			}
 			else if(lastStepCode!=BINK_HAXE_END && getInt == BINK_HAXE_END){
@@ -142,6 +172,7 @@ function clearLines(){
 }
 
 function update(elapsed:Float) {
+    //FlxG.switchState(new MainMenuState());
     if (controls.BACK)
         FlxG.switchState(new MainMenuState());
 
@@ -157,15 +188,30 @@ function update(elapsed:Float) {
 
     for (index in 0...boxes.length){
         if( (FlxG.mouse.y < boxes[index].y + lineHeight*2.7/2) && (FlxG.mouse.y > boxes[index].y - lineHeight*2.7/2) ){
-            boxes[index].color = 0xFF662233;
+            if(choices[index]>0){
+                boxes[index].color = 0xFF9977AA;
+            }
+            else{
+                boxes[index].color = 0xFFA4A4A4;
+            }
+            //boxes[index].setColorTransform(0.3,0.85,0.85,1,0,0,0,0);
+
             if(FlxG.mouse.justPressed){
-                boxes[index].color = 0xFF883344;
+                //boxes[index].setColorTransform(0.3,0.85,0.85,1,0,0,0,0);
+                //boxes[index].color = 0xFF8899FF;
                 choice_set = choices[index];
                 setNextChoice(choices[index]);
             }
         }
         else{
-            boxes[index].color = 0xFF000000;
+            if(choices[index]>0){
+                boxes[index].color = 0xFF6699AA;
+                boxes[index].alpha = 1;
+            }
+            else{
+                boxes[index].color = 0xFF333333;
+                boxes[index].alpha = 0.0001;
+            }
         }
     }
 

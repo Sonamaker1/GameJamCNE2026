@@ -78,10 +78,16 @@ function postCreate()
 	
 }
 
+function onSelectItem(event){
+	if(event.name=="story"){
+		FlxG.switchState(new ModState("SpecialStoryState"));
+	}
+}
+
 function update(){
 	if (FlxG.keys.justPressed.B) {
 		//doOneStep();
-		FlxG.switchState(new ModState("BinkStoryState"));
+		FlxG.switchState(new ModState("SpecialStoryState"));
 	}
 }
 
