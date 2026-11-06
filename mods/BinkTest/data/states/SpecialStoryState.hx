@@ -289,7 +289,7 @@ function update(elapsed:Float) {
 
 
     if (FlxG.keys.justPressed.R || choice_set == 321) {
-        initGlobalStory("./mods/BinkTest/stories/test.ink.json");
+        initGlobalStory("./"+Paths.getAssetsRoot()+"/stories/test.ink.json");
         blankLines();
         iterate = 0;
         partial_number = 0;
